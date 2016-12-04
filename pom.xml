@@ -59,6 +59,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>15.0</version>
+            </dependency>
+            <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.12</version>
@@ -121,7 +126,17 @@
                         </goals>
                         <configuration>
                             <!--<quiet>true</quiet>-->
+                            <author>true</author>
+                            <version>true</version>
+                            <show>protected</show>
+                            <serialwarn>true</serialwarn>
+                            <use>true</use>
+                            <keywords>true</keywords>
                             <additionalparam>-Xdoclint:all</additionalparam>
+                            <!--<top>Top</top>-->
+                            <header><![CDATA[<strong>${project.groupId}:${project.artifactId}<br>${project.version}</strong>]]></header>
+                            <footer><![CDATA[<strong>${project.groupId}:${project.artifactId}<br>${project.version}</strong>]]></footer>
+                            <bottom><![CDATA[Copyright © 2016 <em>Nelkinda Software Craft Pvt Ltd</em>. All rights reserved.]]></bottom>
                         </configuration>
                     </execution>
                 </executions>

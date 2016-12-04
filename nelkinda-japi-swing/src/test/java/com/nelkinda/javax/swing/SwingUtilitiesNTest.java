@@ -18,6 +18,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -27,15 +29,21 @@ import java.util.concurrent.Future;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.LookAndFeel;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
-import static com.nelkinda.javax.swing.SwingUtilities.callAndWait;
-import static com.nelkinda.javax.swing.SwingUtilities.callLater;
-import static com.nelkinda.javax.swing.SwingUtilities.getImageIcon;
-import static com.nelkinda.javax.swing.SwingUtilities.initActionFromBundle;
-import static com.nelkinda.javax.swing.SwingUtilities.setLookAndFeelFromName;
+import static com.nelkinda.javax.swing.SwingUtilitiesN.callAndWait;
+import static com.nelkinda.javax.swing.SwingUtilitiesN.callLater;
+import static com.nelkinda.javax.swing.SwingUtilitiesN.findComponent;
+import static com.nelkinda.javax.swing.SwingUtilitiesN.getImageIcon;
+import static com.nelkinda.javax.swing.SwingUtilitiesN.initActionFromBundle;
+import static com.nelkinda.javax.swing.SwingUtilitiesN.setLookAndFeelFromName;
+import static java.util.ResourceBundle.getBundle;
 import static javax.swing.Action.ACCELERATOR_KEY;
 import static javax.swing.Action.DISPLAYED_MNEMONIC_INDEX_KEY;
 import static javax.swing.Action.LARGE_ICON_KEY;
@@ -48,26 +56,32 @@ import static javax.swing.KeyStroke.getKeyStroke;
 import static javax.swing.UIManager.getLookAndFeel;
 import static javax.swing.UIManager.getSystemLookAndFeelClassName;
 import static javax.swing.UIManager.setLookAndFeel;
+import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class SwingUtilitiesTest {
+public class SwingUtilitiesNTest {
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     @Test
     public void testFindNonExistingComponentInContainer() {
         // Given
         final Container parent = new Container();
 
         // When
-        final Component actual = SwingUtilities.findComponent(parent, JButton.class);
+        final Optional<? extends Component> actual = findComponent(JButton.class, parent);
 
         // Then
-        assertNull(actual);
+        assertFalse(actual.isPresent());
     }
 
     @Test
@@ -78,10 +92,10 @@ public class SwingUtilitiesTest {
         parent.add(expected);
 
         // When
-        final Component actual = SwingUtilities.findComponent(parent, JButton.class);
+        final Optional<? extends Component> actual = findComponent(JButton.class, parent);
 
         // Then
-        assertSame(expected, actual);
+        assertSame(expected, actual.orElseThrow(AssertionError::new));
     }
 
     @Test
@@ -94,10 +108,10 @@ public class SwingUtilitiesTest {
         nested.add(expected);
 
         // When
-        final Component actual = SwingUtilities.findComponent(parent, JButton.class);
+        final Optional<? extends Component> actual = findComponent(JButton.class, parent);
 
         // Then
-        assertSame(expected, actual);
+        assertSame(expected, actual.orElseThrow(AssertionError::new));
     }
 
     @Test
@@ -123,6 +137,12 @@ public class SwingUtilitiesTest {
     }
 
     @Test
+    public void callAndWaitThrowsNPE() throws InterruptedException, ExecutionException, InvocationTargetException {
+        exception.expect(anyOf(instanceOf(NullPointerException.class), instanceOf(IllegalArgumentException.class)));
+        callAndWait(null);
+    }
+
+    @Test
     public void testCallLater() throws InterruptedException, ExecutionException {
         // Given
         final BlockingQueue<String> queue1 = new ArrayBlockingQueue<>(1);
@@ -143,13 +163,19 @@ public class SwingUtilitiesTest {
     }
 
     @Test
+    public void callLaterThrowsNPE() {
+        exception.expect(anyOf(instanceOf(NullPointerException.class), instanceOf(IllegalArgumentException.class)));
+        callLater(null);
+    }
+
+    @Test
     public void testInitActionFromBundle() {
         final Action action = new AbstractAction() {
             @Override
             public void actionPerformed(final ActionEvent e) {
             }
         };
-        final ResourceBundle bundle = ResourceBundle.getBundle(SwingUtilitiesTest.class.getName());
+        final ResourceBundle bundle = getBundle(SwingUtilitiesNTest.class.getName());
         initActionFromBundle(action, "testAction", bundle);
         assertEquals(getKeyStroke("ctrl pressed T"), action.getValue(ACCELERATOR_KEY));
         assertEquals(5, action.getValue(DISPLAYED_MNEMONIC_INDEX_KEY));
@@ -163,6 +189,17 @@ public class SwingUtilitiesTest {
         assertEquals(getImageIcon("toolbarButtonGraphics/general/About24.gif"), action.getValue(LARGE_ICON_KEY));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void initializeActionWithoutActionCommand_throwsNPE() {
+        final Action action = new AbstractAction() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+            }
+        };
+        final ResourceBundle bundle = getBundle(SwingUtilitiesNTest.class.getName());
+        initActionFromBundle(action, bundle);
+    }
+
     @Test
     public void testSetLookAndFeel() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         setLookAndFeel(getSystemLookAndFeelClassName());
@@ -171,5 +208,40 @@ public class SwingUtilitiesTest {
         final LookAndFeel currentLookAndFeel = getLookAndFeel();
         assertNotNull(currentLookAndFeel);
         assertNotEquals(systemLookAndFeel, currentLookAndFeel);
+    }
+
+    @Test
+    public void testGetColumnNames() {
+        final Object[][] tableTestData = {
+                {"1", "A1", "B1", "C1"},
+                {"2", "A2", "B2", "C2"}
+        };
+        final Object[] tableTestColumnNames = { " ", "A", "B", "C" };
+        final JTable jTable = new JTable(tableTestData, tableTestColumnNames);
+        assertArrayEquals(tableTestColumnNames, SwingUtilitiesN.getColumnNames(jTable));
+    }
+
+    @Test
+    public void testGetTableValues() {
+        final Object[][] tableTestData = {
+                {"1", "A1", "B1", "C1"},
+                {"2", "A2", "B2", "C2"}
+        };
+        final Object[] tableTestColumnNames = { " ", "A", "B", "C" };
+        final JTable jTable = new JTable(tableTestData, tableTestColumnNames);
+        final List<String[]> tableValues = SwingUtilitiesN.getTableValues(jTable);
+        for (int row = 0; row < tableTestData.length; row++)
+            assertArrayEquals(tableTestData[row], tableValues.get(row));
+    }
+
+    @Test
+    public void example() {
+           new Thread(() -> {
+               try {
+                   System.err.println(SwingUtilitiesN.callAndWait(() -> JOptionPane.showInputDialog("Enter your name")));
+               } catch (final InvocationTargetException | InterruptedException | ExecutionException e) {
+                   e.printStackTrace();
+               }
+           }).start();
     }
 }
