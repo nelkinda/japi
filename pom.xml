@@ -20,7 +20,7 @@
     <artifactId>nelkinda-japi-parent</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
     <url>http://nelkinda.com/products/japi/</url>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>Parent POM for building the entire JAPI repository.</description>
 
