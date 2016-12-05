@@ -79,7 +79,7 @@ public enum JOptionPane2 {
      * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless} returns {@code true}
      * @see java.awt.GraphicsEnvironment#isHeadless
      */
-    public static Optional<char[]> showPasswordDialog(final Component parentComponent, final Object message, final String title, final int messageType) {
+    public static Optional<char[]> showPasswordDialog(@Nullable final Component parentComponent, final Object message, final String title, final int messageType) {
         final JPasswordField jPasswordField = new JPasswordField();
         jPasswordField.addAncestorListener(FocusRequestingAncestorListener.INSTANCE);
         return OK_OPTION == showConfirmDialog(parentComponent, new Object[]{message, jPasswordField}, title, OK_CANCEL_OPTION, messageType)
