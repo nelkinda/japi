@@ -218,7 +218,7 @@ public enum SwingUtilitiesN {
         return iconCache.getImageIcon(urlString);
     }
 
-    public static String[] getColumnNames(final JTable jTable) {
+    public static String[] getColumnNames(@NotNull final JTable jTable) {
         final TableModel tableModel = jTable.getModel();
         final int columnCount = tableModel.getColumnCount();
         final String[] columnTitles = new String[columnCount];
@@ -228,7 +228,7 @@ public enum SwingUtilitiesN {
         return columnTitles;
     }
 
-    public static List<String[]> getTableValues(final JTable jTable) {
+    public static List<String[]> getTableValues(@NotNull final JTable jTable) {
         final TableModel tableModel = jTable.getModel();
         final int columnCount = tableModel.getColumnCount();
         final List<String[]> tableValues = new ArrayList<>();
