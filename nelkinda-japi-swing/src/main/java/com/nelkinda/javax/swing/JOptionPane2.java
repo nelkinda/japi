@@ -14,31 +14,76 @@
 
 package com.nelkinda.javax.swing;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.awt.Component;
+import java.awt.HeadlessException;
+import java.util.Locale;
+import java.util.Optional;
 import javax.swing.JPasswordField;
+import javax.swing.UIManager;
+import org.jetbrains.annotations.Nullable;
 
 import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
 import static javax.swing.JOptionPane.OK_OPTION;
 import static javax.swing.JOptionPane.QUESTION_MESSAGE;
 import static javax.swing.JOptionPane.showConfirmDialog;
 
+/**
+ * Additional dialogs.
+ *
+ * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
+ * @version 0.0.2
+ * @see javax.swing.JOptionPane
+ * @since 0.0.2
+ */
 public enum JOptionPane2 {
     ; // NOSONAR Bug in SonarQube: https://jira.sonarsource.com/browse/SONARJAVA-1909
 
-    public static char[] showPasswordDialog(final JFrame parent) {
-        final JPanel jPanel = new JPanel();
-        final JPasswordField jPasswordField = new JPasswordField(20);
-        jPasswordField.addAncestorListener(new RequestFocusListener());
-        final JLabel jLabel = new JLabel("Passphrase: ");
-        jPanel.add(jLabel);
-        jPanel.add(jPasswordField);
-        jLabel.setLabelFor(jPasswordField);
-        if (OK_OPTION == showConfirmDialog(parent, jPanel, "Decrypt file", OK_CANCEL_OPTION, QUESTION_MESSAGE)) {
-            return jPasswordField.getPassword();
-        } else {
-            return null;
-        }
+    /**
+     * Shows a question-message dialog requesting a passphrase or password input from the user.
+     * The dialog uses the default frame, which usually means it is centered on the screen.
+     *
+     * @param message the {@code Object} to display
+     * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless} returns {@code true}
+     * @see java.awt.GraphicsEnvironment#isHeadless
+     */
+    public static Optional<char[]> showPasswordDialog(final Object message) {
+        return showPasswordDialog(null, message);
+    }
+
+    /**
+     * Shows a question-message dialog requesting a passphrase or password input from the user parented to {@code parentComponent}.
+     * The dialog is displayed on top of the {@code Component}'s frame, and is usually positioned below the {@code Component}.
+     *
+     * @param parentComponent the parent {@code Component} for the dialog
+     * @param message         the {@code Object} to display
+     * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless} returns {@code true}
+     * @see java.awt.GraphicsEnvironment#isHeadless
+     */
+    public static Optional<char[]> showPasswordDialog(@Nullable final Component parentComponent, final Object message) {
+        return showPasswordDialog(parentComponent, message, UIManager.getString("OptionPane.inputDialogTitle", parentComponent == null ? Locale.getDefault() : parentComponent.getLocale()), QUESTION_MESSAGE);
+    }
+
+    /**
+     * Shows a dialog requesting input from the user parented to {@code parentComponent} with the dialog having the title {@code title} and message type {@code messageType}.
+     *
+     * @param parentComponent the parent {@code Component} for the dialog
+     * @param message         the {@code Object} to display
+     * @param title           the {@code String} to display in the dialog
+     *                        title bar
+     * @param messageType     the type of message that is to be displayed:
+     *                        {@code ERROR_MESSAGE},
+     *                        {@code INFORMATION_MESSAGE},
+     *                        {@code WARNING_MESSAGE},
+     *                        {@code QUESTION_MESSAGE},
+     *                        or {@code PLAIN_MESSAGE}
+     * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless} returns {@code true}
+     * @see java.awt.GraphicsEnvironment#isHeadless
+     */
+    public static Optional<char[]> showPasswordDialog(final Component parentComponent, final Object message, final String title, final int messageType) {
+        final JPasswordField jPasswordField = new JPasswordField();
+        jPasswordField.addAncestorListener(FocusRequestingAncestorListener.INSTANCE);
+        return OK_OPTION == showConfirmDialog(parentComponent, new Object[]{message, jPasswordField}, title, OK_CANCEL_OPTION, messageType)
+                ? Optional.of(jPasswordField.getPassword())
+                : Optional.empty();
     }
 }

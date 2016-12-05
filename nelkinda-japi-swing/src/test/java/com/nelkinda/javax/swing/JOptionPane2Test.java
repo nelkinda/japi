@@ -17,6 +17,7 @@ package com.nelkinda.javax.swing;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.swing.JPasswordField;
@@ -34,13 +35,14 @@ import static java.awt.event.KeyEvent.VK_ENTER;
 import static java.awt.event.KeyEvent.VK_ESCAPE;
 import static java.awt.event.KeyEvent.VK_SHIFT;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class JOptionPane2Test {
     @Test
     public void testShowPasswordDialogOk() throws InterruptedException, ExecutionException, InvocationTargetException, AWTException {
-        Future<char[]> future = callLater(() -> showPasswordDialog(null));
+        Future<Optional<char[]>> future = callLater(() -> showPasswordDialog(null));
         JPasswordField passwordField = callAndWait(() -> findComponent(JPasswordField.class, getWindows())).orElseThrow(AssertionError::new);
         assertNotNull(passwordField);
         assertHasFocus(passwordField);
@@ -53,12 +55,15 @@ public class JOptionPane2Test {
         robot.keyPress(VK_ENTER);
         robot.keyRelease(VK_ENTER);
         assertNotHasFocus(passwordField);
-        assertArrayEquals("A".toCharArray(), future.get());
+        Optional<char[]> result = future.get();
+        assertTrue(result.isPresent());
+        //noinspection OptionalGetWithoutIsPresent
+        assertArrayEquals("A".toCharArray(), result.get());
     }
 
     @Test
     public void testShowPasswordDialogCancel() throws InterruptedException, ExecutionException, InvocationTargetException, AWTException {
-        Future<char[]> future = callLater(() -> showPasswordDialog(null));
+        Future<Optional<char[]>> future = callLater(() -> showPasswordDialog(null));
         JPasswordField passwordField = callAndWait(() -> findComponent(JPasswordField.class, getWindows())).orElseThrow(AssertionError::new);
         assertNotNull(passwordField);
         assertHasFocus(passwordField);
@@ -71,6 +76,7 @@ public class JOptionPane2Test {
         robot.keyPress(VK_ESCAPE);
         robot.keyRelease(VK_ESCAPE);
         assertNotHasFocus(passwordField);
-        assertNull(future.get());
+        assertFalse(future.get().isPresent());
     }
+
 }

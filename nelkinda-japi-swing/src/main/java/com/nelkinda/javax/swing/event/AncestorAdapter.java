@@ -12,27 +12,18 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nelkinda.javax.swing;
+package com.nelkinda.javax.swing.event;
 
-import javax.swing.JComponent;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
-public class RequestFocusListener implements AncestorListener {
+public interface AncestorAdapter extends AncestorListener {
     @Override
-    public void ancestorAdded(final AncestorEvent event) {
-        JComponent component = event.getComponent();
-        component.requestFocusInWindow();
-        component.removeAncestorListener( this );
-    }
+    default void ancestorAdded(AncestorEvent event) {}
 
     @Override
-    public void ancestorRemoved(final AncestorEvent event) {
-
-    }
+    default void ancestorRemoved(AncestorEvent event) {}
 
     @Override
-    public void ancestorMoved(final AncestorEvent event) {
-
-    }
+    default void ancestorMoved(AncestorEvent event) {}
 }

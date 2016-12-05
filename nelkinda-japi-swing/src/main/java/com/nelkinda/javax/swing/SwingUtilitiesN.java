@@ -41,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
 import static java.awt.event.KeyEvent.getExtendedKeyCodeForChar;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.Objects.requireNonNull;
+import static java.util.function.Function.identity;
 import static java.util.logging.Logger.getLogger;
 import static javax.swing.Action.ACCELERATOR_KEY;
 import static javax.swing.Action.ACTION_COMMAND_KEY;
@@ -81,7 +82,7 @@ public enum SwingUtilitiesN {
      * Functions that convert String arguments to the corresponding objects expected as values of an {@link Action}.
      * This is used by {@link #initActionFromBundle} methods to initialize the values of an Action from a ResourceBundle.
      */
-    private static final Map<String, Function<String, Object>> ACTION_CONVERTERS = Loader.createActionConverters();
+    private static final Map<String, Function<String, ?>> ACTION_CONVERTERS = Loader.createActionConverters();
 
     /**
      * Finds a component in a list of containers.
@@ -201,9 +202,9 @@ public enum SwingUtilitiesN {
      */
     public static void initActionFromBundle(@NotNull final Action action, @NotNull final ResourceBundle resourceBundle) {
         @NotNull final String actionCommand = requireNonNull((String) action.getValue(ACTION_COMMAND_KEY));
-        for (final Map.Entry<String, Function<String, Object>> entry : ACTION_CONVERTERS.entrySet()) {
+        for (final Map.Entry<String, Function<String, ?>> entry : ACTION_CONVERTERS.entrySet()) {
             final String actionKey = entry.getKey();
-            final Function<String, Object> function = entry.getValue();
+            final Function<String, ?> function = entry.getValue();
             final String key = actionCommand + "." + actionKey;
             if (resourceBundle.containsKey(key)) {
                 final String stringValue = resourceBundle.getString(key);
@@ -245,14 +246,15 @@ public enum SwingUtilitiesN {
     private enum Loader {
         ; // NOSONAR Bug in SonarQube: https://jira.sonarsource.com/browse/SONARJAVA-1909
 
-        private static Map<String, Function<String, Object>> createActionConverters() {
-            final Map<String, Function<String, Object>> actionConverters = new HashMap<>();
+        private static Map<String, Function<String, ?>> createActionConverters() {
+            final Function<String, String> identity = identity();
+            final Map<String, Function<String, ?>> actionConverters = new HashMap<>();
             actionConverters.put(ACCELERATOR_KEY, KeyStroke::getKeyStroke);
             actionConverters.put(DISPLAYED_MNEMONIC_INDEX_KEY, Integer::parseInt);
-            actionConverters.put(NAME, s -> s);
+            actionConverters.put(NAME, identity);
             actionConverters.put(MNEMONIC_KEY, s -> getExtendedKeyCodeForChar(s.codePointAt(0)));
-            actionConverters.put(SHORT_DESCRIPTION, s -> s);
-            actionConverters.put(LONG_DESCRIPTION, s -> s);
+            actionConverters.put(SHORT_DESCRIPTION, identity);
+            actionConverters.put(LONG_DESCRIPTION, identity);
             actionConverters.put(SMALL_ICON, SwingUtilitiesN::getImageIcon);
             actionConverters.put(LARGE_ICON_KEY, SwingUtilitiesN::getImageIcon);
             return unmodifiableMap(actionConverters);
