@@ -20,9 +20,22 @@ import java.util.Map;
 import java.util.Optional;
 import javax.swing.ImageIcon;
 
+/**
+ * A cache for icons so that they would not be unnecessarily loaded multiple times.
+ *
+ * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
+ * @version 0.0.2
+ * @since 0.0.2
+ */
 public class IconCache {
     private final Map<String, ImageIcon> iconCache = new HashMap<>(); // NOSONAR Naming field like class is okay in this case.
 
+    /**
+     * Returns an Icon URL as String.
+     *
+     * @param urlString Relative URL of the icon.
+     * @return Absolute URL of the icon so that it can be referenced from Swing HTML.
+     */
     public static String getImageIconUrlAsString(final String urlString) {
         return getResource(urlString).toString();
     }
@@ -31,13 +44,21 @@ public class IconCache {
         return IconCache.class.getClassLoader().getResource(urlString);
     }
 
-    ImageIcon getImageIcon(final String urlString) {
-        return iconCache
-                .computeIfAbsent(urlString, u -> Optional
-                        .of(urlString)
-                        .map(IconCache::getResource)
-                        .map(ImageIcon::new)
-                        .orElse(null)
-                );
+    /**
+     * Gets an Icon from the cache.
+     * If the icon is not in the cache already, it is loaded to the cache.
+     *
+     * @param urlString URL for which to get the icon.
+     *                  Relative URLs are resolved using the ClassLoader of IconCache.
+     *                  Absolute URLs are not yet supported.
+     * @return The icon from the cache.
+     */
+    public ImageIcon getImageIcon(final String urlString) {
+        return iconCache.computeIfAbsent(urlString, u -> Optional
+                .of(urlString)
+                .map(IconCache::getResource)
+                .map(ImageIcon::new)
+                .orElse(null)
+        );
     }
 }

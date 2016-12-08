@@ -12,29 +12,11 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nelkinda.javax.swing;
-
-import com.nelkinda.javax.swing.event.AncestorAdapter;
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-
 /**
- * {@link AncestorListener} which requests the focus when an ancestor is added.
- * Useful to gain the focus when there is no control over the direct container hierarchy, like in {@link JOptionPane}.
+ * Extension classes for {@link javax.swing}.
  *
  * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
  * @version 0.0.2
  * @since 0.0.2
  */
-enum FocusRequestingAncestorListener implements AncestorAdapter {
-    INSTANCE;
-
-    @Override
-    public void ancestorAdded(final AncestorEvent event) {
-        JComponent component = event.getComponent();
-        component.requestFocusInWindow();
-        component.removeAncestorListener(this);
-    }
-}
+package com.nelkinda.javax.swing;
