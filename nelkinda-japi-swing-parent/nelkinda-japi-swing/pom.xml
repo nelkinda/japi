@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright © 2016 - 2016 Nelkinda Software Craft Pvt Ltd.
   ~
@@ -20,12 +21,13 @@
 
     <parent>
         <groupId>com.nelkinda.japi</groupId>
-        <artifactId>nelkinda-japi-parent</artifactId>
+        <artifactId>nelkinda-japi-swing-parent</artifactId>
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>nelkinda-japi-swing</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
+    <description>Make life with Swing more joyful.</description>
 
     <dependencies>
         <dependency>

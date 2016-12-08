@@ -93,6 +93,8 @@ public class GuiFactory {
         final JMenu jMenu = new JMenu(actionMap.get(menuKey));
         for (final String key : spec.split("\\s+")) {
             switch (key) {
+            case "":
+                break;
             case "-":
             case "|":
                 jMenu.addSeparator();

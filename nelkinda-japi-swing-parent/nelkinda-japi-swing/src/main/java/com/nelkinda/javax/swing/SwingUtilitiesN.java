@@ -16,6 +16,7 @@ package com.nelkinda.javax.swing;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Window;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +55,7 @@ import static javax.swing.Action.SHORT_DESCRIPTION;
 import static javax.swing.Action.SMALL_ICON;
 import static javax.swing.SwingUtilities.invokeAndWait;
 import static javax.swing.SwingUtilities.invokeLater;
+import static javax.swing.SwingUtilities.updateComponentTreeUI;
 import static javax.swing.UIManager.getInstalledLookAndFeels;
 import static javax.swing.UIManager.setLookAndFeel;
 
@@ -241,6 +243,15 @@ public enum SwingUtilitiesN {
             tableValues.add(rowValues);
         }
         return tableValues;
+    }
+
+    public static void setLookAndFeelFromClassName(final String className, final Window frame) {
+        try {
+            setLookAndFeel(className);
+            updateComponentTreeUI(frame);
+        } catch (final IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException | ClassNotFoundException e) {
+            LOG.config(() -> "Could not set LookAndFeel to " + className + ", reason: " + e);
+        }
     }
 
     private enum Loader {
