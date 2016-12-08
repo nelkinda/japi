@@ -14,28 +14,44 @@
 
 package com.nelkinda.javax.swing.event;
 
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 /**
- * An abstract adapter for receiving {@link AncestorEvent}s.
+ * An abstract adapter for receiving {@link WindowEvent}s.
  * The methods in this adapter are empty.
- * This adapter exists as convenience for creating {@link AncestorListener} objects.
+ * This adapter exists as convenience for creating {@link WindowListener} objects.
  *
  * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
  * @version 0.0.2
  * @since 0.0.2
  */
-public interface AncestorAdapter extends AncestorListener {
+public interface WindowAdapter extends WindowListener {
     @Override
-    default void ancestorAdded(final AncestorEvent event) {
+    default void windowOpened(final WindowEvent e) {
     }
 
     @Override
-    default void ancestorRemoved(final AncestorEvent event) {
+    default void windowClosing(final WindowEvent e) {
     }
 
     @Override
-    default void ancestorMoved(final AncestorEvent event) {
+    default void windowClosed(final WindowEvent e) {
+    }
+
+    @Override
+    default void windowIconified(final WindowEvent e) {
+    }
+
+    @Override
+    default void windowDeiconified(final WindowEvent e) {
+    }
+
+    @Override
+    default void windowActivated(final WindowEvent e) {
+    }
+
+    @Override
+    default void windowDeactivated(final WindowEvent e) {
     }
 }

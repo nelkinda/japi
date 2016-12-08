@@ -12,30 +12,11 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nelkinda.javax.swing.event;
-
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-
 /**
- * An abstract adapter for receiving {@link AncestorEvent}s.
- * The methods in this adapter are empty.
- * This adapter exists as convenience for creating {@link AncestorListener} objects.
+ * Extension classes for {@link javax.swing.event}.
  *
  * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
  * @version 0.0.2
  * @since 0.0.2
  */
-public interface AncestorAdapter extends AncestorListener {
-    @Override
-    default void ancestorAdded(final AncestorEvent event) {
-    }
-
-    @Override
-    default void ancestorRemoved(final AncestorEvent event) {
-    }
-
-    @Override
-    default void ancestorMoved(final AncestorEvent event) {
-    }
-}
+package com.nelkinda.javax.swing.event;
