@@ -14,6 +14,7 @@
 
 /**
  * Extension classes for {@link javax.swing.event}.
+ * Also, it provides Adapter interfaces as replacement for Adapter classes of EventListeners.
  *
  * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
  * @version 0.0.2
