@@ -25,6 +25,13 @@ import static java.awt.datatransfer.DataFlavor.stringFlavor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * Step definitions for dealing with the system clipboard.
+ *
+ * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
+ * @version 0.0.2
+ * @since 0.0.2
+ */
 public class SystemClipboardStepdefs {
     @Given("^the system clipboard is empty[,.]?$")
     public void theSystemClipboardIsEmpty() throws Throwable {

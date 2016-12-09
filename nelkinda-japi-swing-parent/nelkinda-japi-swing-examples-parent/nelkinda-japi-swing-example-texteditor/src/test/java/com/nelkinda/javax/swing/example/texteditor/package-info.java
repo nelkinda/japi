@@ -12,23 +12,11 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nelkinda.javax.swing.example.texteditor;
-
-import cucumber.api.CucumberOptions;
-import cucumber.api.junit.Cucumber;
-import org.junit.runner.RunWith;
-
 /**
- * JUnit-Cucumber-Bridge for running Gherkin tests from JUnit.
+ * A text editor as an example for how to use JAPI.
  *
  * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
  * @version 0.0.2
  * @since 0.0.2
  */
-@CucumberOptions(
-        features = { "src/test/resources/features/" },
-        glue = { "com.nelkinda.javax.swing.example.texteditor" }
-)
-@RunWith(Cucumber.class)
-public class EditorTest { // NOSONAR Sonar doesn't know about Cucumber.
-}
+package com.nelkinda.javax.swing.example.texteditor;

@@ -44,6 +44,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Step definitions for accessing the editor.
+ *
+ * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
+ * @version 0.0.2
+ * @since 0.0.2
+ */
 public class EditorStepdefs {
     private static final Object monitor = new Object();
     private Editor editor;
@@ -51,7 +58,6 @@ public class EditorStepdefs {
 
     @Given("^I have just started the editor[,.]?$")
     public void iHaveJustStartedTheEditor() throws InvocationTargetException, InterruptedException {
-        // TODO Replace with lambda or method reference
         invokeAndWait(() -> {
             editor = new Editor();
             editorComponent = findComponent(JTextComponent.class, editor.getWindow()).orElseThrow(AssertionError::new);
@@ -62,7 +68,6 @@ public class EditorStepdefs {
     @When("^I enter the text \"([^\"]*)\"[,.]?$")
     public void iEnterTheText(final String text)
             throws BadLocationException, InvocationTargetException, InterruptedException {
-        // TODO Replace with lambda or method reference
         invokeAndWait(() -> {
             final Document document = editorComponent.getDocument();
             try {
@@ -75,7 +80,6 @@ public class EditorStepdefs {
 
     @When("^I action \"([^\"]*)\"[,.]?$")
     public void iAction(final String actionCommand) throws InvocationTargetException, InterruptedException {
-        // TODO Replace with lambda or method reference
         invokeLater(() -> {
             final ActionMap actions = editor.getActions();
             final Action action = actions.get(actionCommand);
@@ -86,7 +90,6 @@ public class EditorStepdefs {
 
     @When("^I wait for action \"([^\"]*)\"[,.]?$")
     public void iWaitForAction(final String actionCommand) throws InvocationTargetException, InterruptedException {
-        // TODO Replace with lambda or method reference
         invokeAndWait(() -> {
             final Action action = editor.getActions().get(actionCommand);
             assertNotNull(action);
@@ -97,7 +100,6 @@ public class EditorStepdefs {
     @When("^I enter the filename \"([^\"]*)\"[,.]?$")
     public void iEnterTheFilename(final String filename) throws Throwable {
         final File file = new File(filename);
-        // TODO Replace with lambda or method reference
         invokeAndWait(() -> {
             editor.fileChooser.setSelectedFile(file);
             editor.fileChooser.approveSelection();
@@ -162,19 +164,16 @@ public class EditorStepdefs {
     }
 
     private boolean isFileChooserShowing() throws InterruptedException, InvocationTargetException, ExecutionException {
-        // TODO Replace with lambda or method reference
         return callAndWait(() -> editor.fileChooser.isShowing());
     }
 
     @When("^I set the caret to position (\\d+)[,.]?$")
     public void iSetTheCursorToPosition(final int caretPosition) throws Throwable {
-        // TODO Replace with lambda or method reference
         invokeAndWait(() -> editorComponent.setCaretPosition(caretPosition));
     }
 
     @When("^I mark from position (\\d+) to position (\\d+),$")
     public void iMarkFromPositionToPosition(final int start, final int end) throws Throwable {
-        // TODO Replace with lambda or method reference
         invokeAndWait(() -> editorComponent.select(start, end));
     }
 

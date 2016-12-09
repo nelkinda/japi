@@ -25,6 +25,13 @@ import static java.nio.file.Paths.get;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Step definitions for dealing with files.
+ *
+ * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
+ * @version 0.0.2
+ * @since 0.0.2
+ */
 public class FileStepdefs {
     @Given("^the file \"([^\"]*)\" has the following content:$")
     public void theFileHasTheFollowingContent(final String filename, final String content) throws IOException {

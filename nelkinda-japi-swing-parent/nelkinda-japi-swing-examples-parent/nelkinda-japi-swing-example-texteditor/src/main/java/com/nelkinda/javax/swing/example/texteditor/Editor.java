@@ -15,14 +15,12 @@
 package com.nelkinda.javax.swing.example.texteditor;
 
 import com.nelkinda.javax.swing.GuiFactory;
-import com.nelkinda.javax.swing.SwingUtilitiesN;
 import com.nelkinda.javax.swing.UndoAndRedo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -35,22 +33,25 @@ import javax.swing.UIManager;
 import javax.swing.text.DefaultEditorKit;
 
 import static com.nelkinda.javax.swing.GuiFactory.findJMenu;
+import static com.nelkinda.javax.swing.SwingUtilitiesN.initActionFromBundle;
 import static com.nelkinda.javax.swing.SwingUtilitiesN.setLookAndFeelFromClassName;
 import static com.nelkinda.javax.swing.SwingUtilitiesN.setLookAndFeelFromName;
 import static java.awt.BorderLayout.NORTH;
 import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Files.write;
 import static java.util.ResourceBundle.getBundle;
-import static java.util.logging.Logger.getLogger;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
 import static javax.swing.SwingUtilities.invokeAndWait;
 import static javax.swing.UIManager.getInstalledLookAndFeels;
 
+/**
+ * A text editor as an example for how to use JAPI.
+ *
+ * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
+ * @version 0.0.2
+ * @since 0.0.2
+ */
 public class Editor {
-    /**
-     * The Logger to use for Logging.
-     */
-    private static final Logger LOG = getLogger("com.nelkinda.javax.swing.example.texteditor");
     private static final String UNNAMED = "<Unnamed>";
 
     final JFileChooser fileChooser = new JFileChooser();
@@ -58,7 +59,6 @@ public class Editor {
     private final UndoAndRedo undoAndRedo = new UndoAndRedo();
     private final ActionMap actions = new ActionMap();
     private final ResourceBundle resourceBundle = getBundle(getClass().getName());
-    private final GuiFactory guiFactory = new GuiFactory(resourceBundle, actions);
     private String documentName = UNNAMED;
     private final JFrame frame = new JFrame("Editor: " + documentName);
     private File file;
@@ -67,6 +67,7 @@ public class Editor {
     Editor() {
         createActions();
         editorPane.getDocument().addUndoableEditListener(undoAndRedo);
+        final GuiFactory guiFactory = new GuiFactory(resourceBundle, actions);
         frame.setJMenuBar(guiFactory.createJMenuBar());
         addLookAndFeelMenuEntries();
         frame.getContentPane().add(new JScrollPane(editorPane));
@@ -98,16 +99,9 @@ public class Editor {
                 actionListener.actionPerformed(e);
             }
         };
-        SwingUtilitiesN.initActionFromBundle(action, actionCommand, resourceBundle);
+        initActionFromBundle(action, actionCommand, resourceBundle);
         actions.put(actionCommand, action);
         return action;
-    }
-
-    public static void main(final String... args) throws InvocationTargetException, InterruptedException {
-        invokeAndWait(() -> {
-            setLookAndFeelFromName("Nimbus");
-            new Editor();
-        });
     }
 
     private void addLookAndFeelMenuEntries() {
@@ -121,6 +115,13 @@ public class Editor {
                     }
                 }
         );
+    }
+
+    public static void main(final String... args) throws InvocationTargetException, InterruptedException {
+        invokeAndWait(() -> {
+            setLookAndFeelFromName("Nimbus");
+            new Editor();
+        });
     }
 
     private void dummy(final ActionEvent e) {
