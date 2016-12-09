@@ -10,17 +10,17 @@
 # You should have received a copy of the GNU Lesser General Public License along with com.nelkinda.japi.
 # If not, see <http://www.gnu.org/licenses/>.
 
-Feature: Editor
+Feature: TextEditor
   Background:
-    Given I have just started the editor.
+    Given I have just started the textEditor.
 
-  Scenario: As a <User>, I want to <start the editor> in order to <use it>
+  Scenario: As a <User>, I want to <start the textEditor> in order to <use it>
     Then the document name must be "<Unnamed>",
-    And the editor has focus,
+    And the textEditor has focus,
     And the document must have the following content:
       """
       """
-    And the window title must be "Editor: <Unnamed>".
+    And the window title must be "TextEditor: <Unnamed>".
 
   Scenario: As a <User>, I want to <enter text> in order to <create and edit content which is textual data>
     When I enter the text "foo",
@@ -36,7 +36,7 @@ Feature: Editor
       """
       """
     And the document name must be "<Unnamed>",
-    And the window title must be "Editor: <Unnamed>".
+    And the window title must be "TextEditor: <Unnamed>".
 
   Scenario: As a <User>, I want to <save a file> in order to <persist my work>
     Given the file "foo.txt" does not exist,
@@ -50,7 +50,7 @@ Feature: Editor
       This is some text.
       """
     And the document name must be "foo.txt",
-    And the window title must be "Editor: foo.txt".
+    And the window title must be "TextEditor: foo.txt".
     When I enter the text " This is some more text.",
     When I action "save",
     Then I must not be asked for a filename,
@@ -64,7 +64,7 @@ Feature: Editor
       """
       """
     And the document name must be "<Unnamed>",
-    And the window title must be "Editor: <Unnamed>".
+    And the window title must be "TextEditor: <Unnamed>".
     When I action "save",
     Then I must be asked for a filename.
     When I enter the filename "foo.txt",
@@ -73,7 +73,7 @@ Feature: Editor
       """
       """
     And the document name must be "foo.txt",
-    And the window title must be "Editor: foo.txt".
+    And the window title must be "TextEditor: foo.txt".
 
   Scenario: As a <User>, I want to <load a file> in order to <continue my work>
     Given the file "foo.txt" has the following content:

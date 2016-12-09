@@ -45,33 +45,33 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Step definitions for accessing the editor.
+ * Step definitions for accessing the textEditor.
  *
  * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
  * @version 0.0.2
  * @since 0.0.2
  */
-public class EditorStepdefs {
+public class TextEditorStepdefs {
     private static final Object monitor = new Object();
-    private Editor editor;
-    private JTextComponent editorComponent;
+    private TextEditor textEditor;
+    private JTextComponent textEditorComponent;
 
-    @Given("^I have just started the editor[,.]?$")
+    @Given("^I have just started the textEditor[,.]?$")
     public void iHaveJustStartedTheEditor() throws InvocationTargetException, InterruptedException {
         invokeAndWait(() -> {
-            editor = new Editor();
-            editorComponent = findComponent(JTextComponent.class, editor.getWindow()).orElseThrow(AssertionError::new);
+            textEditor = new TextEditor();
+            textEditorComponent = findComponent(JTextComponent.class, textEditor.getWindow()).orElseThrow(AssertionError::new);
         });
-        assertNotNull(editorComponent);
+        assertNotNull(textEditorComponent);
     }
 
     @When("^I enter the text \"([^\"]*)\"[,.]?$")
     public void iEnterTheText(final String text)
             throws BadLocationException, InvocationTargetException, InterruptedException {
         invokeAndWait(() -> {
-            final Document document = editorComponent.getDocument();
+            final Document document = textEditorComponent.getDocument();
             try {
-                document.insertString(editorComponent.getCaretPosition(), text, null);
+                document.insertString(textEditorComponent.getCaretPosition(), text, null);
             } catch (final BadLocationException e) {
                 throw new RuntimeException(e);
             }
@@ -81,19 +81,19 @@ public class EditorStepdefs {
     @When("^I action \"([^\"]*)\"[,.]?$")
     public void iAction(final String actionCommand) throws InvocationTargetException, InterruptedException {
         invokeLater(() -> {
-            final ActionMap actions = editor.getActions();
+            final ActionMap actions = textEditor.getActions();
             final Action action = actions.get(actionCommand);
             assertNotNull(action);
-            action.actionPerformed(new ActionEvent(editorComponent, 0, actionCommand));
+            action.actionPerformed(new ActionEvent(textEditorComponent, 0, actionCommand));
         });
     }
 
     @When("^I wait for action \"([^\"]*)\"[,.]?$")
     public void iWaitForAction(final String actionCommand) throws InvocationTargetException, InterruptedException {
         invokeAndWait(() -> {
-            final Action action = editor.getActions().get(actionCommand);
+            final Action action = textEditor.getActions().get(actionCommand);
             assertNotNull(action);
-            action.actionPerformed(new ActionEvent(editorComponent, 0, actionCommand));
+            action.actionPerformed(new ActionEvent(textEditorComponent, 0, actionCommand));
         });
     }
 
@@ -101,18 +101,18 @@ public class EditorStepdefs {
     public void iEnterTheFilename(final String filename) throws Throwable {
         final File file = new File(filename);
         invokeAndWait(() -> {
-            editor.fileChooser.setSelectedFile(file);
-            editor.fileChooser.approveSelection();
+            textEditor.fileChooser.setSelectedFile(file);
+            textEditor.fileChooser.approveSelection();
         });
     }
 
     @When("^I wait for I/O to be completed[,.]$")
     public void iWaitForIOToBeCompleted() throws Throwable {
-        final SwingWorker lastWorker = editor.getLastWorker();
+        final SwingWorker lastWorker = textEditor.getLastWorker();
         lastWorker.get();
     }
 
-    @Then("^the editor has focus[,.]?$")
+    @Then("^the textEditor has focus[,.]?$")
     public void theEditorHasFocus() throws Throwable {
         final FocusAdapter focusAdapter = new FocusAdapter() {
             @Override
@@ -122,9 +122,9 @@ public class EditorStepdefs {
                 }
             }
         };
-        final Callable<Boolean> hasFocus = () -> editorComponent.hasFocus();
-        final Runnable addFocusListener = () -> editorComponent.addFocusListener(focusAdapter);
-        final Runnable removeFocusListener = () -> editorComponent.removeFocusListener(focusAdapter);
+        final Callable<Boolean> hasFocus = () -> textEditorComponent.hasFocus();
+        final Runnable addFocusListener = () -> textEditorComponent.addFocusListener(focusAdapter);
+        final Runnable removeFocusListener = () -> textEditorComponent.removeFocusListener(focusAdapter);
         invokeAndWait(addFocusListener);
         if (!callAndWait(hasFocus)) {
             synchronized (monitor) {
@@ -140,17 +140,17 @@ public class EditorStepdefs {
 
     @Then("^the document name must be \"([^\"]*)\"[,.]?$")
     public void theDocumentNameMustBe(final String expectedDocumentName) throws InterruptedException {
-        assertEquals(expectedDocumentName, editor.getDocumentName());
+        assertEquals(expectedDocumentName, textEditor.getDocumentName());
     }
 
     @Then("^the window title must be \"([^\"]*)\"[,.]?$")
     public void theWindowTitleMustBe(final String expectedWindowTitle) {
-        assertEquals(expectedWindowTitle, editor.getWindow().getTitle());
+        assertEquals(expectedWindowTitle, textEditor.getWindow().getTitle());
     }
 
     @Then("^the document must have the following content:$")
     public void theDocumentMustHaveTheFollowingContent(final String expectedDocumentText) {
-        assertEquals(expectedDocumentText, editorComponent.getText());
+        assertEquals(expectedDocumentText, textEditorComponent.getText());
     }
 
     @Then("^I must be asked for a filename[,.]?$")
@@ -164,25 +164,25 @@ public class EditorStepdefs {
     }
 
     private boolean isFileChooserShowing() throws InterruptedException, InvocationTargetException, ExecutionException {
-        return callAndWait(() -> editor.fileChooser.isShowing());
+        return callAndWait(() -> textEditor.fileChooser.isShowing());
     }
 
     @When("^I set the caret to position (\\d+)[,.]?$")
     public void iSetTheCursorToPosition(final int caretPosition) throws Throwable {
-        invokeAndWait(() -> editorComponent.setCaretPosition(caretPosition));
+        invokeAndWait(() -> textEditorComponent.setCaretPosition(caretPosition));
     }
 
     @When("^I mark from position (\\d+) to position (\\d+),$")
     public void iMarkFromPositionToPosition(final int start, final int end) throws Throwable {
-        invokeAndWait(() -> editorComponent.select(start, end));
+        invokeAndWait(() -> textEditorComponent.select(start, end));
     }
 
     @After
     public void closeTheEditor() throws InvocationTargetException, InterruptedException, ExecutionException {
         iWaitForAction("quit");
-        assertFalse(callAndWait(() -> editorComponent.hasFocus()));
-        editorComponent = null;
-        editor = null;
+        assertFalse(callAndWait(() -> textEditorComponent.hasFocus()));
+        textEditorComponent = null;
+        textEditor = null;
         System.gc();
     }
 

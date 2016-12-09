@@ -51,7 +51,7 @@ import static javax.swing.UIManager.getInstalledLookAndFeels;
  * @version 0.0.2
  * @since 0.0.2
  */
-public class Editor {
+public class TextEditor {
     private static final String UNNAMED = "<Unnamed>";
 
     final JFileChooser fileChooser = new JFileChooser();
@@ -60,11 +60,11 @@ public class Editor {
     private final ActionMap actions = new ActionMap();
     private final ResourceBundle resourceBundle = getBundle(getClass().getName());
     private String documentName = UNNAMED;
-    private final JFrame frame = new JFrame("Editor: " + documentName);
+    private final JFrame frame = new JFrame("TextEditor: " + documentName);
     private File file;
     private SwingWorker lastWorker;
 
-    Editor() {
+    TextEditor() {
         createActions();
         editorPane.getDocument().addUndoableEditListener(undoAndRedo);
         final GuiFactory guiFactory = new GuiFactory(resourceBundle, actions);
@@ -120,7 +120,7 @@ public class Editor {
     public static void main(final String... args) throws InvocationTargetException, InterruptedException {
         invokeAndWait(() -> {
             setLookAndFeelFromName("Nimbus");
-            new Editor();
+            new TextEditor();
         });
     }
 
@@ -138,7 +138,7 @@ public class Editor {
             documentName = file.getName();
         else
             documentName = "<Unnamed>";
-        frame.setTitle("Editor: " + documentName);
+        frame.setTitle("TextEditor: " + documentName);
     }
 
     private void open(final ActionEvent e) {
