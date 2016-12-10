@@ -31,7 +31,11 @@ import java.util.function.Function;
 import java.util.logging.Logger;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -251,6 +255,42 @@ public enum SwingUtilitiesN {
             updateComponentTreeUI(frame);
         } catch (final IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException | ClassNotFoundException e) {
             LOG.config(() -> "Could not set LookAndFeel to " + className + ", reason: " + e);
+        }
+    }
+
+    public static Optional<JMenu> findJMenu(final JMenuBar jMenuBar, final String actionCommand) {
+        for (int i = 0; i < jMenuBar.getMenuCount(); i++) {
+            final JMenu jMenu = jMenuBar.getMenu(i);
+            if (actionCommand.equals(jMenu.getAction().getValue(ACTION_COMMAND_KEY))) {
+                return Optional.of(jMenu);
+            }
+            Optional<JMenu> candidate = findJMenu(jMenu, actionCommand);
+            if (candidate.isPresent()) {
+                return candidate;
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<JMenu> findJMenu(final JMenu jMenu, final String actionCommand) {
+        for (int i = 0; i < jMenu.getItemCount(); i++) {
+            final JMenuItem jMenuItem = jMenu.getItem(i);
+            if (jMenuItem instanceof JMenu) {
+                if (actionCommand.equals(jMenuItem.getAction().getValue(ACTION_COMMAND_KEY))) {
+                    return Optional.of((JMenu) jMenuItem);
+                }
+                Optional<JMenu> candidate = findJMenu((JMenu) jMenuItem, actionCommand);
+                if (candidate.isPresent()) {
+                    return candidate;
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    static void makeToolbarComponentsNotFocusable(final JToolBar toolBar) {
+        for (final Component c : toolBar.getComponents()) {
+            c.setFocusable(false);
         }
     }
 

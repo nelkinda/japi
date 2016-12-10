@@ -14,6 +14,7 @@
 
 package com.nelkinda.javax.swing.example.texteditor;
 
+import com.nelkinda.javax.swing.DummyAction;
 import com.nelkinda.javax.swing.GuiFactory;
 import com.nelkinda.javax.swing.UndoAndRedo;
 import java.awt.event.ActionEvent;
@@ -31,8 +32,9 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.text.DefaultEditorKit;
+import org.jetbrains.annotations.NotNull;
 
-import static com.nelkinda.javax.swing.GuiFactory.findJMenu;
+import static com.nelkinda.javax.swing.SwingUtilitiesN.findJMenu;
 import static com.nelkinda.javax.swing.SwingUtilitiesN.initActionFromBundle;
 import static com.nelkinda.javax.swing.SwingUtilitiesN.setLookAndFeelFromClassName;
 import static com.nelkinda.javax.swing.SwingUtilitiesN.setLookAndFeelFromName;
@@ -63,11 +65,12 @@ public class TextEditor {
     private final JFrame frame = new JFrame("TextEditor: " + documentName);
     private File file;
     private SwingWorker lastWorker;
+    private final GuiFactory guiFactory;
 
     TextEditor() {
+        guiFactory = new GuiFactory(resourceBundle, actions);
         createActions();
         editorPane.getDocument().addUndoableEditListener(undoAndRedo);
-        final GuiFactory guiFactory = new GuiFactory(resourceBundle, actions);
         frame.setJMenuBar(guiFactory.createJMenuBar());
         addLookAndFeelMenuEntries();
         frame.getContentPane().add(new JScrollPane(editorPane));
@@ -77,9 +80,9 @@ public class TextEditor {
     }
 
     private void createActions() {
-        createAction("file", this::dummy);
-        createAction("edit", this::dummy);
-        createAction("lookAndFeel", this::dummy);
+        createDummyAction("file");
+        createDummyAction("edit");
+        createDummyAction("lookAndFeel");
         createAction("new", this::newDocument);
         createAction("open", this::open);
         createAction("save", this::save);
@@ -92,16 +95,19 @@ public class TextEditor {
         createAction("redo", undoAndRedo.getRedoAction());
     }
 
-    private Action createAction(final String actionCommand, final ActionListener actionListener) {
-        final Action action = actionListener instanceof Action ? (Action) actionListener : new AbstractAction() {
+    @NotNull
+    private Action createAction(@NotNull final String actionCommand, @NotNull final ActionListener actionListener) {
+        return guiFactory.setupAction(actionCommand, actionListener instanceof Action ? (Action) actionListener : new AbstractAction() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 actionListener.actionPerformed(e);
             }
-        };
-        initActionFromBundle(action, actionCommand, resourceBundle);
-        actions.put(actionCommand, action);
-        return action;
+        });
+    }
+
+    @NotNull
+    private Action createDummyAction(@NotNull final String actionCommand) {
+        return guiFactory.setupAction(actionCommand, new DummyAction());
     }
 
     private void addLookAndFeelMenuEntries() {
@@ -122,9 +128,6 @@ public class TextEditor {
             setLookAndFeelFromName("Nimbus");
             new TextEditor();
         });
-    }
-
-    private void dummy(final ActionEvent e) {
     }
 
     private void newDocument(final ActionEvent e) {
@@ -158,7 +161,8 @@ public class TextEditor {
     private void save(final ActionEvent e) {
         if (file == null)
             saveAs(e);
-        else runWorker(new Saver(file));
+        else
+            runWorker(new Saver(file));
     }
 
     private void saveAs(final ActionEvent e) {

@@ -12,14 +12,21 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nelkinda.javax.swing.example.csveditor;
+package com.nelkinda.javax.swing;
+
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
 
 /**
- * A CSV editor as an example for how to use JAPI.
+ * Action which does nothing.
  *
  * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
  * @version 0.0.2
  * @since 0.0.2
  */
-public class CsvEditor {
+public class DummyAction extends AbstractAction {
+    @Override
+    public void actionPerformed(final ActionEvent e) {
+        // Dummy
+    }
 }

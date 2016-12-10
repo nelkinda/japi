@@ -2,6 +2,8 @@
   <dictionary name="HUJERC">
     <words>
       <w>japi</w>
+      <w>tbody</w>
+      <w>thead</w>
     </words>
   </dictionary>
 </component>

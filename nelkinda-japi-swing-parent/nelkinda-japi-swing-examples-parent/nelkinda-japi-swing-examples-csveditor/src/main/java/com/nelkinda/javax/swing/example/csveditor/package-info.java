@@ -12,8 +12,6 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nelkinda.javax.swing.example.csveditor;
-
 /**
  * A CSV editor as an example for how to use JAPI.
  *
@@ -21,5 +19,4 @@ package com.nelkinda.javax.swing.example.csveditor;
  * @version 0.0.2
  * @since 0.0.2
  */
-public class CsvEditor {
-}
+package com.nelkinda.javax.swing.example.csveditor;
