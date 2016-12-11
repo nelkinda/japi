@@ -3,11 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/nelkinda-japi-parent.iml" filepath="$PROJECT_DIR$/nelkinda-japi-parent.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nelkinda-japi-swing-parent/nelkinda-japi-swing/nelkinda-japi-swing.iml" filepath="$PROJECT_DIR$/nelkinda-japi-swing-parent/nelkinda-japi-swing/nelkinda-japi-swing.iml" group="nelkinda-japi-swing-parent and modules" />
-      <module fileurl="file://$PROJECT_DIR$/nelkinda-japi-swing-parent/nelkinda-japi-swing-examples-parent/nelkinda-japi-swing-example-texteditor/nelkinda-japi-swing-example-texteditor.iml" filepath="$PROJECT_DIR$/nelkinda-japi-swing-parent/nelkinda-japi-swing-examples-parent/nelkinda-japi-swing-example-texteditor/nelkinda-japi-swing-example-texteditor.iml" group="nelkinda-japi-swing-parent and modules/nelkinda-japi-swing-examples-parent and modules" />
-      <module fileurl="file://$PROJECT_DIR$/nelkinda-japi-swing-parent/nelkinda-japi-swing-examples-parent/nelkinda-japi-swing-examples-csveditor/nelkinda-japi-swing-examples-csveditor.iml" filepath="$PROJECT_DIR$/nelkinda-japi-swing-parent/nelkinda-japi-swing-examples-parent/nelkinda-japi-swing-examples-csveditor/nelkinda-japi-swing-examples-csveditor.iml" group="nelkinda-japi-swing-parent and modules/nelkinda-japi-swing-examples-parent and modules" />
-      <module fileurl="file://$PROJECT_DIR$/nelkinda-japi-swing-parent/nelkinda-japi-swing-examples-parent/nelkinda-japi-swing-examples-parent.iml" filepath="$PROJECT_DIR$/nelkinda-japi-swing-parent/nelkinda-japi-swing-examples-parent/nelkinda-japi-swing-examples-parent.iml" group="nelkinda-japi-swing-parent and modules/nelkinda-japi-swing-examples-parent and modules" />
-      <module fileurl="file://$PROJECT_DIR$/nelkinda-japi-swing-parent/nelkinda-japi-swing-parent.iml" filepath="$PROJECT_DIR$/nelkinda-japi-swing-parent/nelkinda-japi-swing-parent.iml" group="nelkinda-japi-swing-parent and modules" />
+      <module fileurl="file://$PROJECT_DIR$/swing/library/nelkinda-japi-swing.iml" filepath="$PROJECT_DIR$/swing/library/nelkinda-japi-swing.iml" group="nelkinda-japi-swing-parent and modules" />
+      <module fileurl="file://$PROJECT_DIR$/swing/examples/csveditor/nelkinda-japi-swing-example-csveditor.iml" filepath="$PROJECT_DIR$/swing/examples/csveditor/nelkinda-japi-swing-example-csveditor.iml" group="nelkinda-japi-swing-parent and modules/nelkinda-japi-swing-examples-parent and modules" />
+      <module fileurl="file://$PROJECT_DIR$/swing/examples/texteditor/nelkinda-japi-swing-example-texteditor.iml" filepath="$PROJECT_DIR$/swing/examples/texteditor/nelkinda-japi-swing-example-texteditor.iml" group="nelkinda-japi-swing-parent and modules/nelkinda-japi-swing-examples-parent and modules" />
+      <module fileurl="file://$PROJECT_DIR$/swing/examples/nelkinda-japi-swing-examples-parent.iml" filepath="$PROJECT_DIR$/swing/examples/nelkinda-japi-swing-examples-parent.iml" group="nelkinda-japi-swing-parent and modules/nelkinda-japi-swing-examples-parent and modules" />
+      <module fileurl="file://$PROJECT_DIR$/swing/nelkinda-japi-swing-parent.iml" filepath="$PROJECT_DIR$/swing/nelkinda-japi-swing-parent.iml" group="nelkinda-japi-swing-parent and modules" />
     </modules>
   </component>
 </project>

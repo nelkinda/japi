@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="nelkinda-japi-swing" />
+        <module name="nelkinda-japi-swing-example-csveditor" />
         <module name="nelkinda-japi-swing-example-texteditor" />
         <module name="nelkinda-japi-swing-examples-csveditor" />
       </profile>
@@ -14,6 +15,7 @@
     <bytecodeTargetLevel>
       <module name="nelkinda-japi-parent" target="1.8" />
       <module name="nelkinda-japi-swing" target="1.8" />
+      <module name="nelkinda-japi-swing-example-csveditor" target="1.8" />
       <module name="nelkinda-japi-swing-example-texteditor" target="1.8" />
       <module name="nelkinda-japi-swing-examples-csveditor" target="1.8" />
       <module name="nelkinda-japi-swing-examples-parent" target="1.8" />
