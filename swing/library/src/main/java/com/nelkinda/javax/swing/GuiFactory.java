@@ -87,7 +87,7 @@ public class GuiFactory {
      * They key used is {@code base + ".toolBar"}.
      *
      * @param base Base to use.
-     * @return Created JToolBar.
+     * @return Newly created JToolBar.
      */
     @NotNull
     public JToolBar createJToolBar(@NotNull final String base) {
@@ -98,7 +98,7 @@ public class GuiFactory {
      * Creates a JToolBar with the actions specified by the resource bundle.
      *
      * @param key Key from which to create the JToolBar.
-     * @return Created JToolBar.
+     * @return Newly created JToolBar.
      */
     @NotNull
     private JToolBar createJToolBarFromKey(@NotNull final String key) {
@@ -156,9 +156,9 @@ public class GuiFactory {
 
     /**
      * Creates a JToolBar with the actions specified by the resource bundle.
-     * The key used is {@code "toolBar"}
+     * The key used is {@code "toolBar"}.
      *
-     * @return Created JToolBar.
+     * @return Newly created JToolBar.
      */
     @NotNull
     public JToolBar createJToolBar() {
@@ -166,15 +166,23 @@ public class GuiFactory {
     }
 
     /**
-     * Creates a JMenuBar.
+     * Creates a JMenuBar with the actions specified by the resource bundle.
+     * The key used is {@code "menuBar"}.
      *
-     * @return The created JMenuBar.
+     * @return Newly created JMenuBar.
      */
     @NotNull
     public JMenuBar createJMenuBar() {
         return createJMenuBarImpl("menuBar");
     }
 
+    /**
+     * Creates a JMenuBar with the actions specified by the resource bundle.
+     * The key used is {@code base + ".menuBar"}.
+     *
+     * @param base The bae for the key to look up in the resource bundle.
+     * @return Newly created JMenuBar.
+     */
     @NotNull
     public JMenuBar createJMenuBar(@NotNull final String base) {
         return createJMenuBarImpl(base + ".menuBar");
@@ -184,7 +192,7 @@ public class GuiFactory {
      * Creates a JMenuBar.
      *
      * @param menuBarKey Key for the JMenuBar.
-     * @return The created JMenuBar.
+     * @return Newly created JMenuBar.
      */
     @NotNull
     private JMenuBar createJMenuBarImpl(@NotNull final String menuBarKey) {
@@ -199,7 +207,7 @@ public class GuiFactory {
      * Creates a JMenu.
      *
      * @param base The base key for the JMenu to create.
-     * @return The created JMenu.
+     * @return Newly created JMenu.
      */
     @NotNull
     private JMenu createJMenu(@NotNull final String base) {
@@ -214,11 +222,55 @@ public class GuiFactory {
         return jMenu;
     }
 
+    /**
+     * Creates an action.
+     * The action is initialized from the bundle and stored in the action map.
+     *
+     * @param actionCommand Action command for the action.
+     * @param runnable      Runnable to run when the action is triggered.
+     * @return Newly created action.
+     */
     @NotNull
     public Action createAction(@NotNull final String actionCommand, @NotNull final SerializableRunnable runnable) {
         return createAction(actionCommand, new SimpleAction(runnable));
     }
 
+    /**
+     * Creates an action.
+     * The action is initialized from the bundle and stored in the action map.
+     *
+     * @param actionCommand Action command for the action.
+     * @param action        Action to create.
+     * @return Newly created action.
+     */
+    @NotNull
+    public Action createAction(@NotNull final String actionCommand, @NotNull final Action action) {
+        return setupAction(actionCommand, action);
+    }
+
+    /**
+     * Sets up an Action by initializing it form the resource bundle and storing it in the actionMap.
+     *
+     * @param actionCommand Action command of the action to initialize.
+     * @param action        Action to setup.
+     * @return {@code action} after it was setup.
+     */
+    @NotNull
+    public Action setupAction(@NotNull final String actionCommand, @NotNull final Action action) {
+        initActionFromBundle(action, actionCommand, resourceBundle);
+        actionMap.put(actionCommand, action);
+        return action;
+    }
+
+    /**
+     * Creates an action.
+     * The action is initialized from the bundle and stored in the action map.
+     * If the supplied {@code actionListener} is actually an {@link Action}, that action is setup instead.
+     *
+     * @param actionCommand  Action command for the action.
+     * @param actionListener ActionListener to call when the action is triggered.
+     * @return Newly created action.
+     */
     @NotNull
     public Action createAction(@NotNull final String actionCommand, @NotNull final ActionListener actionListener) {
         return setupAction(actionCommand, actionListener instanceof Action ? (Action) actionListener : new AbstractAction() {
@@ -230,19 +282,14 @@ public class GuiFactory {
     }
 
     /**
-     * Sets up an Action by initializing it form the resource bundle and storing it in the actionMap.
+     * Creates an dummy action.
+     * Dummy actions are useful for using action features where actual triggering is not required.
+     * One example is JMenus.
+     * The action is initialized from the bundle and stored in the action map.
      *
-     * @param actionCommand Action command of the action to initialize.
-     * @param action        Action to setup.
-     * @return Setup action.
+     * @param actionCommand Action command for the action.
+     * @return Newly created action.
      */
-    @NotNull
-    public Action setupAction(@NotNull final String actionCommand, @NotNull final Action action) {
-        initActionFromBundle(action, actionCommand, resourceBundle);
-        actionMap.put(actionCommand, action);
-        return action;
-    }
-
     @NotNull
     public Action createAction(@NotNull final String actionCommand) {
         return setupAction(actionCommand, new DummyAction());

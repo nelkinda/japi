@@ -27,6 +27,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
@@ -67,8 +68,18 @@ public class TextEditorStepdefs {
      */
     private JTextComponent textEditorComponent;
 
+    /**
+     * Create TextEditor Step definitions.
+     */
+    public TextEditorStepdefs() {
+        // Nothing to do
+    }
+
+    /**
+     * Starts the text editor.
+     */
     @Given("^I have just started the textEditor[,.]?$")
-    public void iHaveJustStartedTheEditor() throws InvocationTargetException, InterruptedException {
+    public void iHaveJustStartedTheEditor() throws Throwable {
         invokeAndWait(() -> {
             textEditor = new TextEditor();
             textEditorComponent = findComponent(JTextComponent.class, textEditor.getWindow()).orElseThrow(AssertionError::new);
@@ -142,7 +153,7 @@ public class TextEditorStepdefs {
 
     @Then("^the document name must be \"([^\"]*)\"[,.]?$")
     public void theDocumentNameMustBe(final String expectedDocumentName) throws InterruptedException {
-        assertEquals(expectedDocumentName, textEditor.getDocumentName());
+        assertEquals(expectedDocumentName, textEditor.getTitle());
     }
 
     @Then("^the window title must be \"([^\"]*)\"[,.]?$")
@@ -199,17 +210,17 @@ public class TextEditorStepdefs {
     }
 
     @Given("^the current look and feel is the cross-platform look and feel[,.]?$")
-    public void theCurrentLookAndFeelIs() throws Throwable {
+    public void theCurrentLookAndFeelIs() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         setLookAndFeel(getCrossPlatformLookAndFeelClassName());
     }
 
     @When("^I set the look and feel to \"([^\"]*)\"[,.]?$")
-    public void iSetTheLookAndFeelTo(final String lookAndFeelName) throws Throwable {
+    public void iSetTheLookAndFeelTo(final String lookAndFeelName) throws InvocationTargetException, InterruptedException {
         iWaitForAction("lookAndFeel:" + lookAndFeelName);
     }
 
     @Then("^the look and feel must be \"([^\"]*)\"[,.]?$")
-    public void theLookAndFeelMustBe(final String lookAndFeelName) throws Throwable {
+    public void theLookAndFeelMustBe(final String lookAndFeelName) {
         assertEquals(lookAndFeelName, getLookAndFeel().getName());
     }
 }

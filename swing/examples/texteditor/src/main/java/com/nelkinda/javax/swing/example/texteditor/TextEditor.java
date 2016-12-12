@@ -51,21 +51,34 @@ import static javax.swing.UIManager.getInstalledLookAndFeels;
  * @since 0.0.2
  */
 public class TextEditor {
+
+    /**
+     * The title of an unnamed document.
+     */
     private static final String UNNAMED = "<Unnamed>";
 
+    /**
+     * The file chooser for {@link #open()} and {@link #saveAs()}.
+     */
     final JFileChooser fileChooser = new JFileChooser();
 
+    /**
+     * The actual text editor.
+     */
     private final JEditorPane editorPane = new JEditorPane();
 
+    /**
+     * Support for undo and redo.
+     */
     private final UndoAndRedo undoAndRedo = new UndoAndRedo();
 
     private final ActionMap actions = new ActionMap();
 
     private final GuiFactory guiFactory;
 
-    private String documentName = UNNAMED;
+    private String title = UNNAMED;
 
-    private final JFrame frame = new JFrame("TextEditor: " + documentName);
+    private final JFrame frame = new JFrame("TextEditor: " + title);
 
     /**
      * The current file.
@@ -141,10 +154,10 @@ public class TextEditor {
     private void setFile(@Nullable final File file) {
         this.file = file;
         if (file != null)
-            documentName = file.getName();
+            title = file.getName();
         else
-            documentName = "<Unnamed>";
-        frame.setTitle("TextEditor: " + documentName);
+            title = "<Unnamed>";
+        frame.setTitle("TextEditor: " + title);
     }
 
     private void open() {
@@ -178,8 +191,8 @@ public class TextEditor {
         frame.dispose();
     }
 
-    String getDocumentName() {
-        return documentName;
+    String getTitle() {
+        return title;
     }
 
     JFrame getWindow() {
