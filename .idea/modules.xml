@@ -8,6 +8,8 @@
       <module fileurl="file://$PROJECT_DIR$/swing/examples/texteditor/nelkinda-japi-swing-example-texteditor.iml" filepath="$PROJECT_DIR$/swing/examples/texteditor/nelkinda-japi-swing-example-texteditor.iml" group="nelkinda-japi-swing-parent and modules/nelkinda-japi-swing-examples-parent and modules" />
       <module fileurl="file://$PROJECT_DIR$/swing/examples/nelkinda-japi-swing-examples-parent.iml" filepath="$PROJECT_DIR$/swing/examples/nelkinda-japi-swing-examples-parent.iml" group="nelkinda-japi-swing-parent and modules/nelkinda-japi-swing-examples-parent and modules" />
       <module fileurl="file://$PROJECT_DIR$/swing/nelkinda-japi-swing-parent.iml" filepath="$PROJECT_DIR$/swing/nelkinda-japi-swing-parent.iml" group="nelkinda-japi-swing-parent and modules" />
+      <module fileurl="file://$PROJECT_DIR$/swing/test/nelkinda-japi-swing-test.iml" filepath="$PROJECT_DIR$/swing/test/nelkinda-japi-swing-test.iml" group="nelkinda-japi-swing-parent and modules" />
+      <module fileurl="file://$PROJECT_DIR$/swing/testlib/nelkinda-japi-swing-testlib.iml" filepath="$PROJECT_DIR$/swing/testlib/nelkinda-japi-swing-testlib.iml" group="nelkinda-japi-swing-parent and modules" />
     </modules>
   </component>
 </project>

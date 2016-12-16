@@ -22,7 +22,7 @@ Feature: TextEditor
 
   Scenario: As a <User>, I want to <start the textEditor> in order to <use it>
     Then the document name must be "<Unnamed>",
-    And the textEditor has focus,
+    And the textEditor must have focus,
     And the document must have the following content:
       """
       """

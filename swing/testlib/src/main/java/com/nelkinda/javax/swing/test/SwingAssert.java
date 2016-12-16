@@ -12,7 +12,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nelkinda.javax.swing;
+package com.nelkinda.javax.swing.test;
 
 import java.awt.Component;
 import java.awt.event.FocusAdapter;
@@ -22,13 +22,16 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 import static com.nelkinda.javax.swing.SwingUtilitiesN.callAndWait;
+import static java.lang.Thread.currentThread;
 import static javax.swing.SwingUtilities.invokeAndWait;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public enum SwingAssert {
     ; // NOSONAR Bug in SonarQube: https://jira.sonarsource.com/browse/SONARJAVA-1909
 
     public static void assertHasFocus(final Component component) throws InterruptedException, InvocationTargetException, ExecutionException {
+        final Callable<Boolean> hasFocus = component::hasFocus;
         final Object monitor = new Object();
         final FocusAdapter focusAdapter = new FocusAdapter() {
             @Override
@@ -39,14 +42,29 @@ public enum SwingAssert {
             }
         };
         invokeAndWait(() -> component.addFocusListener(focusAdapter));
-        final Callable<Boolean> hasFocus = component::hasFocus;
-        if (!callAndWait(hasFocus)) {
-            wait(monitor);
-        }
+        wait(monitor, hasFocus);
         invokeAndWait(() -> component.removeFocusListener(focusAdapter));
+        assertTrue(callAndWait(hasFocus));
+    }
+
+    @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
+    private static void wait(final Object monitor, final Callable<Boolean> test) throws InterruptedException, ExecutionException, InvocationTargetException {
+        if (!callAndWait(test)) {
+            synchronized (monitor) {
+                // Do not check again!
+                // Checking again might lead to deadlock here!
+                try {
+                    monitor.wait(100);
+                } catch (final InterruptedException ignored) {
+                    currentThread().interrupt();
+                    fail();
+                }
+            }
+        }
     }
 
     public static void assertNotHasFocus(final Component component) throws InterruptedException, InvocationTargetException, ExecutionException {
+        final Callable<Boolean> notHasFocus = () -> !component.hasFocus();
         final Object monitor = new Object();
         final FocusAdapter focusAdapter = new FocusAdapter() {
             @Override
@@ -57,21 +75,9 @@ public enum SwingAssert {
             }
         };
         invokeAndWait(() -> component.addFocusListener(focusAdapter));
-        final Callable<Boolean> hasFocus = component::hasFocus;
-        if (callAndWait(hasFocus)) {
-            wait(monitor);
-        }
+        wait(monitor, notHasFocus);
         invokeAndWait(() -> component.removeFocusListener(focusAdapter));
-        assertFalse(callAndWait(hasFocus));
+        assertTrue(callAndWait(notHasFocus));
     }
 
-    @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
-    private static void wait(final Object monitor) {
-        synchronized (monitor) {
-            try {
-                monitor.wait();
-            } catch (final InterruptedException ignored) {
-            }
-        }
-    }
 }

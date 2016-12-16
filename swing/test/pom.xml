@@ -13,25 +13,35 @@
   ~ If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <packaging>pom</packaging>
     <parent>
-        <artifactId>nelkinda-japi-parent</artifactId>
+        <artifactId>nelkinda-japi-swing-parent</artifactId>
         <groupId>com.nelkinda.japi</groupId>
         <version>0.0.2-SNAPSHOT</version>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>nelkinda-japi-swing-parent</artifactId>
-    <name>${project.groupId}:${project.artifactId}</name>
-    <description>Make life with Swing more joyful.</description>
-
-    <modules>
-        <module>library</module>
-        <module>examples</module>
-        <module>testlib</module>
-        <module>test</module>
-    </modules>
+    <artifactId>nelkinda-japi-swing-test</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.nelkinda.japi</groupId>
+            <artifactId>nelkinda-japi-swing</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.java.linoleum</groupId>
+            <artifactId>jlfgr</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nelkinda.japi</groupId>
+            <artifactId>nelkinda-japi-swing-testlib</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

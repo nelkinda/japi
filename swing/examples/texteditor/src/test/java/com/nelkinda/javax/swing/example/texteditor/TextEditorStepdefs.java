@@ -19,11 +19,8 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -31,9 +28,11 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
+import org.jetbrains.annotations.NotNull;
 
 import static com.nelkinda.javax.swing.SwingUtilitiesN.callAndWait;
 import static com.nelkinda.javax.swing.SwingUtilitiesN.findComponent;
+import static com.nelkinda.javax.swing.test.SwingAssert.assertHasFocus;
 import static javax.swing.SwingUtilities.invokeAndWait;
 import static javax.swing.SwingUtilities.invokeLater;
 import static javax.swing.UIManager.getCrossPlatformLookAndFeelClassName;
@@ -52,11 +51,6 @@ import static org.junit.Assert.assertTrue;
  * @since 0.0.2
  */
 public class TextEditorStepdefs {
-
-    /**
-     * The monitor to synchronize within steps.
-     */
-    private static final Object MONITOR = new Object();
 
     /**
      * The text editor under test.
@@ -123,36 +117,13 @@ public class TextEditorStepdefs {
         textEditor.getLastWorker().get();
     }
 
-    @Then("^the textEditor has focus[,.]?$")
+    @Then("^the textEditor must have focus[,.]?$")
     public void theEditorHasFocus() throws InvocationTargetException, InterruptedException, ExecutionException {
-        final FocusAdapter focusAdapter = new FocusAdapter() {
-            @SuppressWarnings({"NN_NAKED_NOTIFY", "NN_NAKED_NOTIFY"})
-            @Override
-            public void focusGained(final FocusEvent e) {
-                synchronized (MONITOR) {
-                    MONITOR.notify();
-                }
-            }
-        };
-        final Callable<Boolean> hasFocus = () -> textEditorComponent.hasFocus();
-        final Runnable addFocusListener = () -> textEditorComponent.addFocusListener(focusAdapter);
-        final Runnable removeFocusListener = () -> textEditorComponent.removeFocusListener(focusAdapter);
-        invokeAndWait(addFocusListener);
-        if (!callAndWait(hasFocus))
-            synchronized (MONITOR) {
-                try {
-                    if (!callAndWait(hasFocus))
-                        MONITOR.wait();
-                } catch (final InterruptedException ignored) {
-                    // Ignore
-                }
-            }
-        invokeAndWait(removeFocusListener);
-        assertTrue(callAndWait(hasFocus));
+        assertHasFocus(textEditorComponent);
     }
 
     @Then("^the document name must be \"([^\"]*)\"[,.]?$")
-    public void theDocumentNameMustBe(final String expectedDocumentName) throws InterruptedException {
+    public void theDocumentNameMustBe(@NotNull final String expectedDocumentName) throws InterruptedException {
         assertEquals(expectedDocumentName, textEditor.getTitle());
     }
 

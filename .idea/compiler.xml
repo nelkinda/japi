@@ -10,6 +10,8 @@
         <module name="nelkinda-japi-swing-example-csveditor" />
         <module name="nelkinda-japi-swing-example-texteditor" />
         <module name="nelkinda-japi-swing-examples-csveditor" />
+        <module name="nelkinda-japi-swing-test" />
+        <module name="nelkinda-japi-swing-testlib" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -20,6 +22,8 @@
       <module name="nelkinda-japi-swing-examples-csveditor" target="1.8" />
       <module name="nelkinda-japi-swing-examples-parent" target="1.8" />
       <module name="nelkinda-japi-swing-parent" target="1.8" />
+      <module name="nelkinda-japi-swing-test" target="1.8" />
+      <module name="nelkinda-japi-swing-testlib" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

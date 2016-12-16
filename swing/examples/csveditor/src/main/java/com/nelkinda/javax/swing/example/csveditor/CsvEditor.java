@@ -14,6 +14,8 @@
 
 package com.nelkinda.javax.swing.example.csveditor;
 
+import java.awt.Window;
+
 /**
  * A CSV editor as an example for how to use JAPI.
  *
@@ -22,4 +24,11 @@ package com.nelkinda.javax.swing.example.csveditor;
  * @since 0.0.2
  */
 public class CsvEditor {
+    Window getWindow() {
+        return null;
+    }
+
+    String getTitle() {
+        return null;
+    }
 }

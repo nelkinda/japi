@@ -45,5 +45,10 @@
             <version>2.0.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.nelkinda.japi</groupId>
+            <artifactId>nelkinda-japi-swing-testlib</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>
