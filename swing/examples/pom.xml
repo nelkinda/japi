@@ -18,7 +18,7 @@
     <parent>
         <groupId>com.nelkinda.japi</groupId>
         <artifactId>nelkinda-japi-swing-parent</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>nelkinda-japi-swing-examples-parent</artifactId>

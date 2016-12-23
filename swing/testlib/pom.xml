@@ -17,7 +17,7 @@
     <parent>
         <artifactId>nelkinda-japi-swing-parent</artifactId>
         <groupId>com.nelkinda.japi</groupId>
-        <version>0.0.2</version>
+        <version>0.0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.nelkinda.japi</groupId>
             <artifactId>nelkinda-japi-swing</artifactId>
-            <version>0.0.2</version>
+            <version>0.0.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
