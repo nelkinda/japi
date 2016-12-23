@@ -51,8 +51,8 @@ public enum SwingAssert {
     private static void wait(final Object monitor, final Callable<Boolean> test) throws InterruptedException, ExecutionException, InvocationTargetException {
         if (!callAndWait(test)) {
             synchronized (monitor) {
-                // Do not check again!
-                // Checking again might lead to deadlock here!
+                // Do not check again, checking again on the event thread while having the lock might lead to deadlock here!
+                // Also, do not loop, we're not really waiting, just giving a chance to the AWT / Swing EDT.
                 try {
                     monitor.wait(100);
                 } catch (final InterruptedException ignored) {

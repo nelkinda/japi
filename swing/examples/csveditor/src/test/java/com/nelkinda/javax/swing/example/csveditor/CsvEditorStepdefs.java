@@ -14,15 +14,34 @@
 
 package com.nelkinda.javax.swing.example.csveditor;
 
+import cucumber.api.DataTable;
+import cucumber.api.PendingException;
+import cucumber.api.java.After;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import java.awt.event.ActionEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.JTable;
+import javax.swing.table.TableModel;
 import org.jetbrains.annotations.NotNull;
 
+import static com.nelkinda.javax.swing.SwingUtilitiesN.callAndWait;
 import static com.nelkinda.javax.swing.SwingUtilitiesN.findComponent;
 import static com.nelkinda.javax.swing.test.SwingAssert.assertHasFocus;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static javax.swing.SwingUtilities.invokeAndWait;
+import static javax.swing.SwingUtilities.invokeLater;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Step definitions for accessing the CsvEditor.
@@ -57,7 +76,7 @@ public class CsvEditorStepdefs {
     public void iHaveJustStartedTheCsvEditor() throws Throwable {
         invokeAndWait(() -> {
             csvEditor = new CsvEditor();
-            csvEditorComponent = findComponent(JTable.class, csvEditor.getWindow()).orElseThrow(AssertionError::new);
+            csvEditorComponent = findComponent(JTable.class, csvEditor.getJFrame()).orElseThrow(AssertionError::new);
         });
     }
 
@@ -71,4 +90,123 @@ public class CsvEditorStepdefs {
         assertHasFocus(csvEditorComponent);
     }
 
+    @Then("^the window title must be \"([^\"]*)\"[,.]?$")
+    public void theWindowTitleMustBe(final String expectedWindowTitle) {
+        assertEquals(expectedWindowTitle, csvEditor.getJFrame().getTitle());
+    }
+
+    @And("^the table must be empty[,.]?$")
+    public void theTableMustBeEmpty() throws Throwable {
+        theTableMustHaveTheFollowingContent(DataTable.create(emptyList()));
+    }
+
+    @And("^the table must have the following content:$")
+    public void theTableMustHaveTheFollowingContent(@NotNull final DataTable expectedDataTable) throws Throwable {
+        final DataTable actualDataTable = createDataTable(csvEditorComponent);
+        actualDataTable.diff(expectedDataTable);
+    }
+
+    /**
+     * Creates a Cucumber DataTable from a JTable.
+     *
+     * @param jTable JTable from which to create the Cucumber DataTable.
+     * @return Cucumber DataTable created from {@code jTable}.
+     */
+    @NotNull
+    private static DataTable createDataTable(@NotNull final JTable jTable) {
+        return createDataTable(jTable.getModel());
+    }
+
+    /**
+     * Creates a Cucumber DataTable from a TableModel.
+     *
+     * @param tableModel TableModel for which to create a Cucumber DataTable.
+     * @return DataTable created from {@code tableModel}.
+     */
+    @NotNull
+    private static DataTable createDataTable(@NotNull final TableModel tableModel) {
+        final String[] columnNames = getColumnNames(tableModel);
+        final List<List<String>> rawTableData = getTableCellsAs2DList(tableModel);
+        return DataTable.create(rawTableData, (String) null, columnNames);
+    }
+
+    /**
+     * Gets the column names of a TableModel.
+     *
+     * @param tableModel TableModel from which to get the column names.
+     * @return The column names of {@code tableModel} as array.
+     */
+    @NotNull
+    private static String[] getColumnNames(@NotNull final TableModel tableModel) {
+        final String[] columnHeaders = new String[tableModel.getColumnCount()];
+        for (int columnIndex = 0; columnIndex < tableModel.getColumnCount(); columnIndex++)
+            columnHeaders[columnIndex] = tableModel.getColumnName(columnIndex);
+        return columnHeaders;
+    }
+
+    /**
+     * Gets the table cells of a TableModel as two-dimensional list.
+     *
+     * @param tableModel TableModel from which to get the table cells.
+     * @return Table cells from {@code tableModel} as two-dimensional list of Strings.
+     */
+    @NotNull
+    private static List<List<String>> getTableCellsAs2DList(@NotNull final TableModel tableModel) {
+        final List<List<String>> rawTableData = new ArrayList<>();
+        for (int rowIndex = 0; rowIndex < tableModel.getRowCount(); rowIndex++)
+            rawTableData.add(getRow(tableModel, rowIndex));
+        if (tableModel.getColumnCount() != 0)
+            rawTableData.add(0, asList(getColumnNames(tableModel)));
+        return rawTableData;
+    }
+
+    /**
+     * Gets a row from a TableModel as list of Strings.
+     *
+     * @param tableModel TableModel from which to get a table row.
+     * @param rowIndex   Index of the row to get.
+     * @return Table row from {@code tableModel} as list of Strings.
+     */
+    @NotNull
+    private static List<String> getRow(@NotNull final TableModel tableModel, final int rowIndex) {
+        final List<String> rowData = new ArrayList<>();
+        for (int columnIndex = 0; columnIndex < tableModel.getColumnCount(); columnIndex++)
+            rowData.add((String) tableModel.getValueAt(rowIndex, columnIndex));
+        return rowData;
+    }
+
+    @When("^I action \"([^\"]*)\"[,.]?$")
+    public void iAction(final String actionCommand) throws InvocationTargetException, InterruptedException {
+        invokeLater(() -> {
+            final ActionMap actions = csvEditor.getActionMap();
+            final Action action = actions.get(actionCommand);
+            assertNotNull(action);
+            action.actionPerformed(new ActionEvent(csvEditorComponent, 0, actionCommand));
+        });
+    }
+
+    @After
+    public void closeTheEditor() throws InvocationTargetException, InterruptedException, ExecutionException {
+        iWaitForAction("quit");
+        assertFalse(callAndWait(() -> csvEditorComponent.hasFocus()));
+        csvEditorComponent = null;
+        csvEditor = null;
+        System.gc();
+    }
+
+    @When("^I wait for action \"([^\"]*)\"[,.]?$")
+    public void iWaitForAction(final String actionCommand) throws InvocationTargetException, InterruptedException {
+        invokeAndWait(() -> {
+            final Action action = csvEditor.getActionMap().get(actionCommand);
+            assertNotNull(action);
+            action.actionPerformed(new ActionEvent(csvEditorComponent, 0, actionCommand));
+        });
+    }
+
+    @Then("^the window is disposed[,.]?$")
+    public void theWindowIsDisposed() throws Throwable {
+        assertFalse(callAndWait(() -> csvEditorComponent.hasFocus()));
+        assertFalse(callAndWait(() -> csvEditor.getJFrame().isVisible()));
+        assertFalse(callAndWait(() -> csvEditor.getJFrame().isDisplayable()));
+    }
 }

@@ -31,6 +31,12 @@
             <artifactId>nelkinda-japi-swing-testlib</artifactId>
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.10.19</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <parent>
         <groupId>com.nelkinda.japi</groupId>

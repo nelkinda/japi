@@ -65,20 +65,20 @@ public class TextEditor {
     /**
      * The actual text editor.
      */
-    private final JEditorPane editorPane = new JEditorPane();
+    private final JEditorPane jEditorPane = new JEditorPane();
 
     /**
      * Support for undo and redo.
      */
     private final UndoAndRedo undoAndRedo = new UndoAndRedo();
 
-    private final ActionMap actions = new ActionMap();
+    private final ActionMap actionMap = new ActionMap();
 
     private final GuiFactory guiFactory;
 
     private String title = UNNAMED;
 
-    private final JFrame frame = new JFrame("TextEditor: " + title);
+    private final JFrame jFrame = new JFrame("TextEditor: " + title);
 
     /**
      * The current file.
@@ -94,15 +94,15 @@ public class TextEditor {
     private SwingWorker lastWorker;
 
     TextEditor() {
-        guiFactory = new GuiFactory(getBundle(getClass().getName()), actions);
+        guiFactory = new GuiFactory(getBundle(getClass().getName()), actionMap);
         createActions();
-        editorPane.getDocument().addUndoableEditListener(undoAndRedo);
-        frame.setJMenuBar(guiFactory.createJMenuBar());
+        jEditorPane.getDocument().addUndoableEditListener(undoAndRedo);
+        jFrame.setJMenuBar(guiFactory.createJMenuBar());
         addLookAndFeelMenuEntries();
-        frame.getContentPane().add(new JScrollPane(editorPane));
-        frame.getContentPane().add(guiFactory.createJToolBar(), NORTH);
-        frame.pack();
-        frame.setVisible(true);
+        jFrame.getContentPane().add(new JScrollPane(jEditorPane));
+        jFrame.getContentPane().add(guiFactory.createJToolBar(), NORTH);
+        jFrame.pack();
+        jFrame.setVisible(true);
     }
 
     /**
@@ -125,7 +125,7 @@ public class TextEditor {
     }
 
     private void addLookAndFeelMenuEntries() {
-        findJMenu(frame.getJMenuBar(), "lookAndFeel")
+        findJMenu(jFrame.getJMenuBar(), "lookAndFeel")
                 .ifPresent(this::addLookAndFeelMenuEntries);
     }
 
@@ -141,13 +141,13 @@ public class TextEditor {
     @NotNull
     private Action createLookAndFeelAction(final UIManager.LookAndFeelInfo lookAndFeelInfo) {
         final Action action = guiFactory.createAction("lookAndFeel:" + lookAndFeelInfo.getName(),
-                () -> setLookAndFeelFromClassName(lookAndFeelInfo.getClassName(), frame));
+                () -> setLookAndFeelFromClassName(lookAndFeelInfo.getClassName(), jFrame));
         action.putValue(Action.NAME, lookAndFeelInfo.getName());
         return action;
     }
 
     private void newDocument() {
-        editorPane.setText("");
+        jEditorPane.setText("");
         setFile(null);
     }
 
@@ -157,11 +157,11 @@ public class TextEditor {
             title = file.getName();
         else
             title = "<Unnamed>";
-        frame.setTitle("TextEditor: " + title);
+        jFrame.setTitle("TextEditor: " + title);
     }
 
     private void open() {
-        if (APPROVE_OPTION == fileChooser.showOpenDialog(frame))
+        if (APPROVE_OPTION == fileChooser.showOpenDialog(jFrame))
             runWorker(new Loader(fileChooser.getSelectedFile()));
     }
 
@@ -179,7 +179,7 @@ public class TextEditor {
     }
 
     private void saveAs() {
-        if (APPROVE_OPTION == fileChooser.showSaveDialog(frame)) {
+        if (APPROVE_OPTION == fileChooser.showSaveDialog(jFrame)) {
             runWorker(new Saver(fileChooser.getSelectedFile()));
         }
     }
@@ -188,19 +188,19 @@ public class TextEditor {
      * Quits the application.
      */
     private void quit() {
-        frame.dispose();
+        jFrame.dispose();
     }
 
     String getTitle() {
         return title;
     }
 
-    JFrame getWindow() {
-        return frame;
+    JFrame getJFrame() {
+        return jFrame;
     }
 
-    ActionMap getActions() {
-        return actions;
+    ActionMap getActionMap() {
+        return actionMap;
     }
 
     /**
@@ -244,7 +244,7 @@ public class TextEditor {
     /**
      * SwingWorker to save a file from the editor.
      *
-     * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
+     * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>, Nelkinda Software Craft Pvt Ltd
      * @version 0.0.2
      * @since 0.0.2
      */
@@ -266,7 +266,7 @@ public class TextEditor {
 
         @Override
         protected Void doInBackground() throws Exception {
-            write(file.toPath(), editorPane.getText().getBytes(UTF_8));
+            write(file.toPath(), jEditorPane.getText().getBytes(UTF_8));
             invokeAndWait(() -> setFile(file));
             return null;
         }
@@ -276,7 +276,7 @@ public class TextEditor {
     /**
      * SwingWorker to load a file into the editor.
      *
-     * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>
+     * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>, Nelkinda Software Craft Pvt Ltd
      * @version 0.0.2
      * @since 0.0.2
      */
@@ -299,7 +299,7 @@ public class TextEditor {
         protected Void doInBackground() throws Exception {
             final String text = new String(readAllBytes(file.toPath()), UTF_8);
             invokeAndWait(() -> {
-                editorPane.setText(text);
+                jEditorPane.setText(text);
                 setFile(file);
             });
             return null;

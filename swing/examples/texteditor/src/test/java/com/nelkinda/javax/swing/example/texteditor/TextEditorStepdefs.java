@@ -76,7 +76,7 @@ public class TextEditorStepdefs {
     public void iHaveJustStartedTheEditor() throws Throwable {
         invokeAndWait(() -> {
             textEditor = new TextEditor();
-            textEditorComponent = findComponent(JTextComponent.class, textEditor.getWindow()).orElseThrow(AssertionError::new);
+            textEditorComponent = findComponent(JTextComponent.class, textEditor.getJFrame()).orElseThrow(AssertionError::new);
         });
         assertNotNull(textEditorComponent);
     }
@@ -96,7 +96,7 @@ public class TextEditorStepdefs {
     @When("^I action \"([^\"]*)\"[,.]?$")
     public void iAction(final String actionCommand) throws InvocationTargetException, InterruptedException {
         invokeLater(() -> {
-            final ActionMap actions = textEditor.getActions();
+            final ActionMap actions = textEditor.getActionMap();
             final Action action = actions.get(actionCommand);
             assertNotNull(action);
             action.actionPerformed(new ActionEvent(textEditorComponent, 0, actionCommand));
@@ -129,7 +129,7 @@ public class TextEditorStepdefs {
 
     @Then("^the window title must be \"([^\"]*)\"[,.]?$")
     public void theWindowTitleMustBe(final String expectedWindowTitle) {
-        assertEquals(expectedWindowTitle, textEditor.getWindow().getTitle());
+        assertEquals(expectedWindowTitle, textEditor.getJFrame().getTitle());
     }
 
     @Then("^the document must have the following content:$")
@@ -174,7 +174,7 @@ public class TextEditorStepdefs {
     @When("^I wait for action \"([^\"]*)\"[,.]?$")
     public void iWaitForAction(final String actionCommand) throws InvocationTargetException, InterruptedException {
         invokeAndWait(() -> {
-            final Action action = textEditor.getActions().get(actionCommand);
+            final Action action = textEditor.getActionMap().get(actionCommand);
             assertNotNull(action);
             action.actionPerformed(new ActionEvent(textEditorComponent, 0, actionCommand));
         });

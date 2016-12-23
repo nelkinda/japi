@@ -28,6 +28,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -102,12 +103,29 @@ public enum SwingUtilitiesN {
      */
     public static <T extends Component> Optional<T> findComponent(@NotNull final Class<T> componentClass, @NotNull final Container... containers) {
         requireNonNull(componentClass);
+        Predicate<Component> test = c -> componentClass.isInstance(c);
+        return findComponent(test, containers);
+    }
+
+    /**
+     * Finds a component in a list of containers.
+     *
+     * @param test       Predicate to find the component.
+     * @param containers Containers in which to find a component of the specified class.
+     * @param <T>        Type of the component to find.
+     * @return Found component or {@code null}.
+     * @throws NullPointerException     in case {@code componentClass} or {@code containers} is {@code null}.
+     * @throws IllegalArgumentException in case {@code componentClass} or {@code containers} is {@code null} (IntelliJ IDEA).
+     */
+    public static <T extends Component> Optional<T> findComponent(@NotNull final Predicate test, @NotNull final Container... containers) {
+        requireNonNull(test);
+
         for (final Container container : requireNonNull(containers)) {
             for (final Component c : container.getComponents()) {
-                if (componentClass.isInstance(c))
-                    return Optional.of(componentClass.cast(c));
+                if (test.test(c))
+                    return Optional.of((T) c);
                 if (c instanceof Container) {
-                    final Optional<T> component = findComponent(componentClass, (Container) c);
+                    final Optional<T> component = findComponent(test, (Container) c);
                     if (component.isPresent())
                         return component;
                 }
@@ -229,6 +247,28 @@ public enum SwingUtilitiesN {
                 action.putValue(actionKey, object);
             }
         }
+        upgradeTooltip(action);
+    }
+
+    private static void upgradeTooltip(final @NotNull Action action) {
+        final KeyStroke accelerator = (KeyStroke) action.getValue(ACCELERATOR_KEY);
+        final String tooltip = (String) action.getValue(SHORT_DESCRIPTION);
+        if (accelerator != null && tooltip != null) {
+            action.putValue(SHORT_DESCRIPTION, getUpgradedTooltip(accelerator, tooltip));
+        }
+    }
+
+    @NotNull
+    private static String getUpgradedTooltip(final KeyStroke accelerator, final String tooltip) {
+        return tooltip
+                + " ("
+                + accelerator.toString()
+                .replaceAll("\\bctrl\\b", "Ctrl")
+                .replaceAll("\\balt\\b", "Alt")
+                .replaceAll("\\bshift\\b", "Shift")
+                .replaceAll(" pressed ", "+")
+                .replaceAll("^pressed ", "")
+                + ")";
     }
 
     public static ImageIcon getImageIcon(final String urlString) {

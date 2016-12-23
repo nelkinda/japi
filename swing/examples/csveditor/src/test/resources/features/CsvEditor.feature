@@ -20,9 +20,21 @@ Feature: CSV Editor
   Background:
     Given I have just started the csvEditor.
 
-    Scenario: As a <User>, I want to <start the csvEditor> in order to <use it>
-      Then the table name must be "<Unnamed>",
-      And the csvEditor must have focus,
-      And the table must have the following content:
-        ||
-      And the window title must be "CSV Editor: <Unnamed>"
+  Scenario: As a <User>, I want to <start the csvEditor> in order to <use it>
+    Then the table name must be "<Unnamed>",
+    And the csvEditor must have focus,
+    And the table must be empty,
+    And the window title must be "CSV Editor: <Unnamed>"
+
+  Scenario: As a <User>, I want to <quit the editor> in order to <stop using it>
+    When I wait for action "quit",
+    Then the window is disposed.
+
+  Scenario: As a <User>, I want to <insert a new column> in an empty table
+    And the csvEditor must have focus,
+    When I wait for action "columnInsertAfter"
+    Then the table must have the following content:
+      | Unnamed_A |
+    When I wait for action "columnInsertAfter"
+    Then the table must have the following content:
+      | Unnamed_A | Unnamed_B |

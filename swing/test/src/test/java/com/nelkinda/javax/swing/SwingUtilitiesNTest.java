@@ -183,7 +183,7 @@ public class SwingUtilitiesNTest {
         assertEquals(5, action.getValue(DISPLAYED_MNEMONIC_INDEX_KEY));
         assertEquals("Test Action", action.getValue(NAME));
         assertEquals((int) 'A', action.getValue(MNEMONIC_KEY));
-        assertEquals("A test action for testing.", action.getValue(SHORT_DESCRIPTION));
+        assertEquals("A test action for testing (Ctrl+T)", action.getValue(SHORT_DESCRIPTION));
         assertEquals("This is a test action for testing.", action.getValue(LONG_DESCRIPTION));
         assertNotNull(action.getValue(SMALL_ICON));
         assertEquals(getImageIcon("toolbarButtonGraphics/general/About16.gif"), action.getValue(SMALL_ICON));
