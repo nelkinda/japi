@@ -10,18 +10,16 @@
   ~ See the GNU Lesser General Public License for more details.
   ~
   ~ You should have received a copy of the GNU Lesser General Public License along with com.nelkinda.japi.
-  ~ If not, see <http://www.gnu.org/licenses/>.
+  ~ If not, see <http://www.gnu.org/licenses />.
   -->
 
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="http://maven.apache.org/POM/4.0.0"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.nelkinda.japi</groupId>
     <artifactId>nelkinda-japi-parent</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
     <url>http://nelkinda.com/products/japi/</url>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <packaging>pom</packaging>
     <description>Parent POM for building the entire JAPI repository.</description>
 
@@ -55,7 +53,8 @@
         <connection>scm:git:git://github.com/nelkinda/japi.git</connection>
         <developerConnection>scm:git:ssh://github.com:nelkinda/japi.git</developerConnection>
         <url>http://github.com/nelkinda/japi/tree/master</url>
-    </scm>
+      <tag>nelkinda-japi-parent-0.0.2</tag>
+  </scm>
 
     <dependencyManagement>
         <dependencies>
