@@ -72,13 +72,25 @@ public class TextEditor {
      */
     private final UndoAndRedo undoAndRedo = new UndoAndRedo();
 
+    /**
+     * The ActionMap of the text editor.
+     */
     private final ActionMap actionMap = new ActionMap();
 
+    /**
+     * The GuiFactory to build the UI.
+     */
     private final GuiFactory guiFactory;
 
+    /**
+     * The current document title.
+     */
     private String title = UNNAMED;
 
-    private final JFrame jFrame = new JFrame("TextEditor: " + title);
+    /**
+     * The application window.
+     */
+    private final JFrame jFrame = new JFrame(generateWindowTitle(title));
 
     /**
      * The current file.
@@ -103,6 +115,11 @@ public class TextEditor {
         jFrame.getContentPane().add(guiFactory.createJToolBar(), NORTH);
         jFrame.pack();
         jFrame.setVisible(true);
+    }
+
+    @NotNull
+    private static String generateWindowTitle(final String title) {
+        return "TextEditor: " + title;
     }
 
     /**
@@ -156,8 +173,8 @@ public class TextEditor {
         if (file != null)
             title = file.getName();
         else
-            title = "<Unnamed>";
-        jFrame.setTitle("TextEditor: " + title);
+            title = UNNAMED;
+        jFrame.setTitle(generateWindowTitle(title));
     }
 
     private void open() {
