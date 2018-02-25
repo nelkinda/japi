@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 - 2016 Nelkinda Software Craft Pvt Ltd.
+ * Copyright © 2016 - 2018 Nelkinda Software Craft Pvt Ltd.
  *
  * This file is part of com.nelkinda.japi.
  *
@@ -14,13 +14,15 @@
 
 package com.nelkinda.javax.swing.example.csveditor;
 
+import org.junit.Test;
+
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-import org.junit.Test;
 
 import static com.nelkinda.javax.swing.example.csveditor.ArrayContainsMatcher.contains;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -56,5 +58,47 @@ public class CsvTableModelTest {
         tableModel.removeTableModelListener(tableModelListener2);
         assertThat(tableModel.getTableModelListeners(), not(contains(tableModelListener)));
         assertThat(tableModel.getTableModelListeners(), not(contains(tableModelListener2)));
+    }
+
+    @Test
+    public void firstColumnInsertBefore() {
+        final CsvTableModel tableModel = new CsvTableModel();
+        tableModel.columnInsertBefore(0, "First Column");
+        assertThat(tableModel.getColumnCount(), is(1));
+        assertThat(tableModel.getColumnName(0), is("First Column"));
+        assertEquals(String.class, tableModel.getColumnClass(0));
+    }
+
+    @Test
+    public void firstRowInsertBefore() {
+        final CsvTableModel tableModel = new CsvTableModel();
+        tableModel.rowInsertBefore(0);
+        assertThat(tableModel.getRowCount(), is(1));
+    }
+
+    @Test
+    public void firstColumnInsertAfter() {
+        final CsvTableModel tableModel = new CsvTableModel();
+        tableModel.columnInsertAfter(-1, "First Column");
+        assertThat(tableModel.getColumnCount(), is(1));
+        assertThat(tableModel.getColumnName(0), is("First Column"));
+        assertEquals(String.class, tableModel.getColumnClass(0));
+    }
+
+    @Test
+    public void firstRowInsertAfter() {
+        final CsvTableModel tableModel = new CsvTableModel();
+        tableModel.rowInsertAfter(-1);
+        assertThat(tableModel.getRowCount(), is(1));
+    }
+
+    @Test
+    public void addFirstCellWithAfter() {
+        final CsvTableModel tableModel = new CsvTableModel();
+        tableModel.rowInsertAfter(-1);
+        tableModel.columnInsertAfter(-1, "First Column");
+        assertThat(tableModel.getValueAt(0, 0), is(""));
+        tableModel.setValueAt((Object) "foo", 0, 0);
+        assertThat(tableModel.getValueAt(0, 0), is("foo"));
     }
 }

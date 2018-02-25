@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 - 2016 Nelkinda Software Craft Pvt Ltd.
+ * Copyright © 2016 - 2018 Nelkinda Software Craft Pvt Ltd.
  *
  * This file is part of com.nelkinda.japi.
  *
@@ -73,7 +73,7 @@ import static javax.swing.UIManager.setLookAndFeel;
  * @since 0.0.2
  */
 public enum SwingUtilitiesN {
-    ; // NOSONAR Bug in SonarQube: https://jira.sonarsource.com/browse/SONARJAVA-1909
+    ;
 
     /**
      * The Logger to use for Logging.
@@ -103,8 +103,7 @@ public enum SwingUtilitiesN {
      */
     public static <T extends Component> Optional<T> findComponent(@NotNull final Class<T> componentClass, @NotNull final Container... containers) {
         requireNonNull(componentClass);
-        Predicate<Component> test = c -> componentClass.isInstance(c);
-        return findComponent(test, containers);
+        return findComponent(componentClass::isInstance, containers);
     }
 
     /**
@@ -117,7 +116,7 @@ public enum SwingUtilitiesN {
      * @throws NullPointerException     in case {@code componentClass} or {@code containers} is {@code null}.
      * @throws IllegalArgumentException in case {@code componentClass} or {@code containers} is {@code null} (IntelliJ IDEA).
      */
-    public static <T extends Component> Optional<T> findComponent(@NotNull final Predicate test, @NotNull final Container... containers) {
+    public static <T extends Component> Optional<T> findComponent(@NotNull final Predicate<? super Component> test, @NotNull final Container... containers) {
         requireNonNull(test);
 
         for (final Container container : requireNonNull(containers)) {
@@ -340,13 +339,12 @@ public enum SwingUtilitiesN {
     }
 
     static void makeToolbarComponentsNotFocusable(final JToolBar toolBar) {
-        for (final Component c : toolBar.getComponents()) {
+        for (final Component c : toolBar.getComponents())
             c.setFocusable(false);
-        }
     }
 
     private enum Loader {
-        ; // NOSONAR Bug in SonarQube: https://jira.sonarsource.com/browse/SONARJAVA-1909
+        ;
 
         private static Map<String, Function<String, ?>> createActionConverters() {
             final Function<String, String> identity = identity();

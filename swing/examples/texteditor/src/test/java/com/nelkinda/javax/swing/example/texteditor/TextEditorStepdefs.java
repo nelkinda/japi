@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 - 2016 Nelkinda Software Craft Pvt Ltd.
+ * Copyright © 2016 - 2018 Nelkinda Software Craft Pvt Ltd.
  *
  * This file is part of com.nelkinda.japi.
  *
@@ -14,6 +14,7 @@
 
 package com.nelkinda.javax.swing.example.texteditor;
 
+import com.nelkinda.javax.swing.SwingUtilitiesN;
 import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -22,9 +23,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ExecutionException;
-import javax.swing.Action;
-import javax.swing.ActionMap;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
@@ -113,8 +112,9 @@ public class TextEditorStepdefs {
     }
 
     @When("^I wait for I/O to be completed[,.]$")
-    public void iWaitForIOToBeCompleted() throws InterruptedException, ExecutionException {
+    public void iWaitForIOToBeCompleted() throws InterruptedException, ExecutionException, InvocationTargetException {
         textEditor.getLastWorker().get();
+        SwingUtilities.invokeAndWait(() -> {});
     }
 
     @Then("^the textEditor must have focus[,.]?$")
@@ -123,18 +123,18 @@ public class TextEditorStepdefs {
     }
 
     @Then("^the document name must be \"([^\"]*)\"[,.]?$")
-    public void theDocumentNameMustBe(@NotNull final String expectedDocumentName) throws InterruptedException {
-        assertEquals(expectedDocumentName, textEditor.getTitle());
+    public void theDocumentNameMustBe(@NotNull final String expectedDocumentName) throws InterruptedException, InvocationTargetException, ExecutionException {
+        assertEquals(expectedDocumentName, SwingUtilitiesN.callAndWait(textEditor::getTitle));
     }
 
     @Then("^the window title must be \"([^\"]*)\"[,.]?$")
-    public void theWindowTitleMustBe(final String expectedWindowTitle) {
-        assertEquals(expectedWindowTitle, textEditor.getJFrame().getTitle());
+    public void theWindowTitleMustBe(final String expectedWindowTitle) throws InterruptedException, ExecutionException, InvocationTargetException {
+        assertEquals(expectedWindowTitle, SwingUtilitiesN.callAndWait(textEditor.getJFrame()::getTitle));
     }
 
     @Then("^the document must have the following content:$")
-    public void theDocumentMustHaveTheFollowingContent(final String expectedDocumentText) {
-        assertEquals(expectedDocumentText, textEditorComponent.getText());
+    public void theDocumentMustHaveTheFollowingContent(final String expectedDocumentText) throws InterruptedException, ExecutionException, InvocationTargetException {
+        assertEquals(expectedDocumentText, SwingUtilitiesN.callAndWait(textEditorComponent::getText));
     }
 
     @Then("^I must be asked for a filename[,.]?$")

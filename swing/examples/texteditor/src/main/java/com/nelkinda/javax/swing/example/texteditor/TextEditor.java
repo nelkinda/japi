@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 - 2016 Nelkinda Software Craft Pvt Ltd.
+ * Copyright © 2016 - 2018 Nelkinda Software Craft Pvt Ltd.
  *
  * This file is part of com.nelkinda.japi.
  *
@@ -17,6 +17,7 @@ package com.nelkinda.javax.swing.example.texteditor;
 import com.nelkinda.javax.swing.GuiFactory;
 import com.nelkinda.javax.swing.UndoAndRedo;
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.JEditorPane;
@@ -39,7 +40,6 @@ import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Files.write;
 import static java.util.ResourceBundle.getBundle;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
-import static javax.swing.SwingUtilities.invokeAndWait;
 import static javax.swing.SwingUtilities.invokeLater;
 import static javax.swing.UIManager.getInstalledLookAndFeels;
 
@@ -284,10 +284,13 @@ public class TextEditor {
         @Override
         protected Void doInBackground() throws Exception {
             write(file.toPath(), jEditorPane.getText().getBytes(UTF_8));
-            invokeAndWait(() -> setFile(file));
             return null;
         }
 
+        @Override
+        protected void done() {
+            setFile(file);
+        }
     }
 
     /**
@@ -297,7 +300,7 @@ public class TextEditor {
      * @version 0.0.2
      * @since 0.0.2
      */
-    private class Loader extends SwingWorker<Void, Void> {
+    private class Loader extends SwingWorker<String, Void> {
         /**
          * File to load.
          */
@@ -313,13 +316,18 @@ public class TextEditor {
         }
 
         @Override
-        protected Void doInBackground() throws Exception {
-            final String text = new String(readAllBytes(file.toPath()), UTF_8);
-            invokeAndWait(() -> {
-                jEditorPane.setText(text);
+        protected String doInBackground() throws Exception {
+            return new String(readAllBytes(file.toPath()), UTF_8);
+        }
+
+        @Override
+        protected void done() {
+            try {
+                jEditorPane.setText(get());
                 setFile(file);
-            });
-            return null;
+            } catch (InterruptedException | ExecutionException e) {
+                assert false : e;
+            }
         }
     }
 

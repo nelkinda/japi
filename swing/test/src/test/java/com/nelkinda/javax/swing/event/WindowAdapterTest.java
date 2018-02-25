@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 - 2016 Nelkinda Software Craft Pvt Ltd.
+ * Copyright © 2016 - 2018 Nelkinda Software Craft Pvt Ltd.
  *
  * This file is part of com.nelkinda.japi.
  *
@@ -18,9 +18,8 @@ import java.awt.event.WindowListener;
 import org.junit.Test;
 
 public class WindowAdapterTest {
-
     @Test
-    public void providesDefaultsToAllMethods() {
+    public void providesDefaultsForAllMethods() {
         final WindowListener windowListener = new WindowAdapter() {
         };
         windowListener.windowActivated(null);

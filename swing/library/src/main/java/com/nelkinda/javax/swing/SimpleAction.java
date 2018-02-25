@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 - 2016 Nelkinda Software Craft Pvt Ltd.
+ * Copyright © 2016 - 2018 Nelkinda Software Craft Pvt Ltd.
  *
  * This file is part of com.nelkinda.japi.
  *
@@ -29,7 +29,7 @@ public class SimpleAction extends AbstractAction {
     /**
      * The Runnable to which to delegate the action.
      */
-    private final SerializableRunnable runnable; // NOSONAR TODO Report bug
+    private final SerializableRunnable runnable;
 
     /**
      * Creates a SimpleAction.

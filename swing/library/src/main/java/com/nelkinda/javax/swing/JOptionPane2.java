@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 - 2016 Nelkinda Software Craft Pvt Ltd.
+ * Copyright © 2016 - 2018 Nelkinda Software Craft Pvt Ltd.
  *
  * This file is part of com.nelkinda.japi.
  *
@@ -38,7 +38,7 @@ import static javax.swing.JOptionPane.showConfirmDialog;
  * @since 0.0.2
  */
 public enum JOptionPane2 {
-    ; // NOSONAR Bug in SonarQube: https://jira.sonarsource.com/browse/SONARJAVA-1909
+    ;
 
     /**
      * Shows a question-message dialog requesting a passphrase or password input from the user.
@@ -87,6 +87,7 @@ public enum JOptionPane2 {
     public static Optional<char[]> showPasswordDialog(@Nullable final Component parentComponent, final Object message, final String title, final int messageType) {
         final JPasswordField jPasswordField = new JPasswordField();
         jPasswordField.addAncestorListener(FocusRequestingAncestorListener.INSTANCE);
+        jPasswordField.addComponentListener(FocusRequestingAncestorListener.INSTANCE);
         return OK_OPTION == showConfirmDialog(parentComponent, new Object[]{message, jPasswordField}, title, OK_CANCEL_OPTION, messageType)
                 ? Optional.of(jPasswordField.getPassword())
                 : Optional.empty();

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 - 2016 Nelkinda Software Craft Pvt Ltd.
+ * Copyright © 2016 - 2018 Nelkinda Software Craft Pvt Ltd.
  *
  * This file is part of com.nelkinda.japi.
  *
@@ -18,9 +18,8 @@ import javax.swing.event.AncestorListener;
 import org.junit.Test;
 
 public class AncestorAdapterTest {
-
     @Test
-    public void providesDefaultsToAllMethods() {
+    public void providesDefaultsForAllMethods() {
         final AncestorListener ancestorListener = new AncestorAdapter() {
         };
         ancestorListener.ancestorAdded(null);

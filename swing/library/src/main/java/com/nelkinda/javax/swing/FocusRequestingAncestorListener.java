@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 - 2016 Nelkinda Software Craft Pvt Ltd.
+ * Copyright © 2016 - 2018 Nelkinda Software Craft Pvt Ltd.
  *
  * This file is part of com.nelkinda.japi.
  *
@@ -19,7 +19,12 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
+
+import com.nelkinda.javax.swing.event.ComponentAdapter;
 import org.jetbrains.annotations.NotNull;
+
+import java.awt.*;
+import java.awt.event.ComponentEvent;
 
 /**
  * {@link AncestorListener} which requests the focus when an ancestor is added.
@@ -32,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
  * @version 0.0.2
  * @since 0.0.2
  */
-enum FocusRequestingAncestorListener implements AncestorAdapter {
+enum FocusRequestingAncestorListener implements AncestorAdapter, ComponentAdapter {
 
     /**
      * The singleton instance.
@@ -43,6 +48,13 @@ enum FocusRequestingAncestorListener implements AncestorAdapter {
     public void ancestorAdded(@NotNull final AncestorEvent event) {
         final JComponent component = event.getComponent();
         component.requestFocusInWindow();
-        component.removeAncestorListener(this);
+//        component.removeAncestorListener(this);
+    }
+
+    @Override
+    public void componentShown(@NotNull final ComponentEvent event) {
+        final Component component = event.getComponent();
+        component.requestFocusInWindow();
+//        component.removeComponentListener(this);
     }
 }

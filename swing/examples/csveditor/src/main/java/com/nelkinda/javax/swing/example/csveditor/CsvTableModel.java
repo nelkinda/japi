@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 - 2016 Nelkinda Software Craft Pvt Ltd.
+ * Copyright © 2016 - 2018 Nelkinda Software Craft Pvt Ltd.
  *
  * This file is part of com.nelkinda.japi.
  *
@@ -13,6 +13,8 @@
  */
 
 package com.nelkinda.javax.swing.example.csveditor;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +35,24 @@ public class CsvTableModel implements TableModel {
     private int columnCount;
 
     /**
+     * The number of rows currently present in this model.
+     */
+    private int rowCount;
+
+    /**
      * The names of the columns.
      */
     private final List<String> columnNames = new ArrayList<>();
 
+    /** The rows of columns.
+     * The expectation is that adding rows is a more frequent operation than adding columns.
+     * Therefore this model is storing rows of columns, not columns of rows.
+     */
+    private final List<List<String>> values = new ArrayList<>();
+
     @Override
     public int getRowCount() {
-        // TODO
-        return 0;
+        return rowCount;
     }
 
     @Override
@@ -55,8 +67,7 @@ public class CsvTableModel implements TableModel {
 
     @Override
     public Class<?> getColumnClass(final int columnIndex) {
-        // TODO
-        return null;
+        return String.class;
     }
 
     @Override
@@ -67,31 +78,41 @@ public class CsvTableModel implements TableModel {
 
     @Override
     public String getValueAt(final int rowIndex, final int columnIndex) {
-        // TODO
-        return null;
+        return values.get(rowIndex).get(columnIndex);
     }
 
     @Override
-    public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
+    public void setValueAt(@NotNull final Object aValue, final int rowIndex, final int columnIndex) {
         setValueAt(aValue.toString(), rowIndex, columnIndex);
     }
 
-    public void setValueAt(final String value, final int rowIndex, final int columnIndex) {
-        // TODO
+    public void setValueAt(@NotNull final String value, final int rowIndex, final int columnIndex) {
+        values.get(rowIndex).set(columnIndex, value);
     }
 
     @Override
-    public final void addTableModelListener(final TableModelListener l) {
+    public final void addTableModelListener(@NotNull final TableModelListener l) {
         listenerList.add(TableModelListener.class, l);
     }
 
     @Override
-    public final void removeTableModelListener(final TableModelListener l) {
+    public final void removeTableModelListener(@NotNull final TableModelListener l) {
         listenerList.remove(TableModelListener.class, l);
     }
 
     public final TableModelListener[] getTableModelListeners() {
         return listenerList.getListeners(TableModelListener.class);
+    }
+
+    /**
+     * Inserts a new column named {@code columnName} before the column with index {@code columnIndex}.
+     *
+     * @param columnIndex Index of the column before which to insert a new column.
+     * @param columnName  Name of the column to insert.
+     * @since 0.0.3
+     */
+    public void columnInsertBefore(final int columnIndex, final String columnName) {
+        columnInsertAfter(columnIndex - 1, columnName);
     }
 
     /**
@@ -103,6 +124,32 @@ public class CsvTableModel implements TableModel {
     public void columnInsertAfter(final int columnIndex, final String columnName) {
         columnCount++;
         columnNames.add(columnIndex + 1, columnName);
+        for (final List<String> row : values)
+            row.add(columnIndex + 1, "");
+    }
+
+    /**
+     * Inserts a new row before the row with index {@code rowIndex}.
+     *
+     * @param rowIndex Index of the row after which to insert a new row.
+     * @since 0.0.3
+     */
+    public void rowInsertBefore(final int rowIndex) {
+        rowInsertAfter(rowIndex - 1);
+    }
+
+    /**
+     * Inserts a new row after the row with index {@code rowIndex}.
+     *
+     * @param rowIndex Index of the row after which to insert a new row.
+     * @since 0.0.3
+     */
+    public void rowInsertAfter(final int rowIndex) {
+        rowCount++;
+        final List<String> row = new ArrayList<>();
+        for (int i = 0; i < columnCount; i++)
+            row.add("");
+        values.add(rowIndex + 1, row);
     }
 
     /**
@@ -129,14 +176,11 @@ public class CsvTableModel implements TableModel {
      * @see TableModelEvent
      * @see EventListenerList
      */
-    public void fireTableChanged(TableModelEvent e) {
-        // Guaranteed to return a non-null array
-        Object[] listeners = listenerList.getListenerList();
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        for (int i = listeners.length-2; i>=0; i-=2) {
-            if (listeners[i]==TableModelListener.class) {
-                ((TableModelListener)listeners[i+1]).tableChanged(e);
+    private void fireTableChanged(final TableModelEvent e) {
+        final Object[] listeners = listenerList.getListenerList();
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == TableModelListener.class) {
+                ((TableModelListener) listeners[i + 1]).tableChanged(e);
             }
         }
     }

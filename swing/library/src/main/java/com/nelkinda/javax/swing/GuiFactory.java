@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016 - 2016 Nelkinda Software Craft Pvt Ltd.
+ * Copyright © 2016 - 2018 Nelkinda Software Craft Pvt Ltd.
  *
  * This file is part of com.nelkinda.japi.
  *
@@ -117,9 +117,8 @@ public class GuiFactory {
      * @param adder     Code to execute for processing a normal list item.
      */
     private void processItemList(@NotNull final String listKey, @NotNull final Runnable separator, @NotNull final Consumer<String> adder) {
-        for (final String itemKey : getList(listKey)) {
+        for (final String itemKey : getList(listKey))
             processItem(itemKey, separator, adder);
-        }
     }
 
     /**
@@ -141,7 +140,7 @@ public class GuiFactory {
      * @param separator Code to execute if the itemKey is a separator ({@code "-"} or {@code "|"}).
      * @param adder     Code to execute if the itemKey is something else.
      */
-    private void processItem(@NotNull final String itemKey, @NotNull final Runnable separator, @NotNull final Consumer<String> adder) {
+    private static void processItem(@NotNull final String itemKey, @NotNull final Runnable separator, @NotNull final Consumer<String> adder) {
         switch (itemKey) {
         case "":
             break;
@@ -197,9 +196,8 @@ public class GuiFactory {
     @NotNull
     private JMenuBar createJMenuBarImpl(@NotNull final String menuBarKey) {
         final JMenuBar jMenuBar = new JMenuBar();
-        for (final String menuKey : getList(menuBarKey)) {
+        for (final String menuKey : getList(menuBarKey))
             jMenuBar.add(createJMenu(menuKey));
-        }
         return jMenuBar;
     }
 
@@ -213,11 +211,10 @@ public class GuiFactory {
     private JMenu createJMenu(@NotNull final String base) {
         final JMenu jMenu = new JMenu(actionMap.get(base));
         processItemList(base + ".menu", jMenu::addSeparator, itemKey -> {
-            if (resourceBundle.containsKey(itemKey + ".menu")) {
+            if (resourceBundle.containsKey(itemKey + ".menu"))
                 jMenu.add(createJMenu(itemKey));
-            } else {
+            else
                 jMenu.add(actionMap.get(itemKey));
-            }
         });
         return jMenu;
     }
