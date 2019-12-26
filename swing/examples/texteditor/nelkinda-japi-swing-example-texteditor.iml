@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_13">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -21,7 +21,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: info.cukes:cucumber-junit:1.2.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.google.code.findbugs:annotations:2.0.1" level="project" />
-    <orderEntry type="module" module-name="nelkinda-japi-swing-testlib" />
+    <orderEntry type="module" module-name="nelkinda-japi-swing-testlib" scope="TEST" />
     <orderEntry type="module" module-name="nelkinda-japi-swing" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:17.0.0" level="project" />
     <orderEntry type="library" name="Maven: net.java.linoleum:jlfgr:1_0" level="project" />

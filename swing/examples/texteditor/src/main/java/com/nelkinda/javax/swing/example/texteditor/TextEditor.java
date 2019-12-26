@@ -35,9 +35,7 @@ import static com.nelkinda.javax.swing.SwingUtilitiesN.findJMenu;
 import static com.nelkinda.javax.swing.SwingUtilitiesN.setLookAndFeelFromClassName;
 import static com.nelkinda.javax.swing.SwingUtilitiesN.setLookAndFeelFromName;
 import static java.awt.BorderLayout.NORTH;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.nio.file.Files.readAllBytes;
-import static java.nio.file.Files.write;
+import static java.nio.file.Files.*;
 import static java.util.ResourceBundle.getBundle;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
 import static javax.swing.SwingUtilities.invokeLater;
@@ -279,7 +277,7 @@ public class TextEditor {
 
         @Override
         protected Void doInBackground() throws Exception {
-            write(file.toPath(), jEditorPane.getText().getBytes(UTF_8));
+            writeString(file.toPath(), jEditorPane.getText());
             return null;
         }
 
@@ -313,7 +311,7 @@ public class TextEditor {
 
         @Override
         protected String doInBackground() throws Exception {
-            return new String(readAllBytes(file.toPath()), UTF_8);
+            return readString(file.toPath());
         }
 
         @Override

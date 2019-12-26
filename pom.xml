@@ -18,7 +18,7 @@
     <groupId>com.nelkinda.japi</groupId>
     <artifactId>nelkinda-japi-parent</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
-    <url>http://nelkinda.com/products/japi/</url>
+    <url>https://nelkinda.com/products/japi/</url>
     <version>0.0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>Parent POM for building the entire JAPI repository.</description>
@@ -28,7 +28,7 @@
     </modules>
 
     <properties>
-        <jdk.version>1.8</jdk.version>
+        <jdk.version>13</jdk.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -45,7 +45,7 @@
             <name>Christian Hujer</name>
             <email>Christian.Hujer@nelkinda.com</email>
             <organization>Nelkinda Software Craft Pvt Ltd</organization>
-            <organizationUrl>http://nelkinda.com</organizationUrl>
+            <organizationUrl>https://nelkinda.com</organizationUrl>
         </developer>
     </developers>
 
@@ -160,7 +160,7 @@
                             <use>true</use>
                             <keywords>true</keywords>
                             <additionalOptions>-Xdoclint:all</additionalOptions>
-                            <source>1.8</source>
+                            <source>13</source>
                             <!--<top>Top</top>-->
                             <header><![CDATA[<strong>${project.groupId}:${project.artifactId}<br>${project.version}</strong>]]></header>
                             <footer><![CDATA[<strong>${project.groupId}:${project.artifactId}<br>${project.version}</strong>]]></footer>

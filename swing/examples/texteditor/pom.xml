@@ -47,6 +47,7 @@
             <groupId>com.nelkinda.japi</groupId>
             <artifactId>nelkinda-japi-swing-testlib</artifactId>
             <version>0.0.3-SNAPSHOT</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

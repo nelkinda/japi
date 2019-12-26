@@ -6,24 +6,24 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="nelkinda-japi-swing" />
-        <module name="nelkinda-japi-swing-example-csveditor" />
+        <module name="nelkinda-japi-swing-test" />
         <module name="nelkinda-japi-swing-example-texteditor" />
         <module name="nelkinda-japi-swing-examples-csveditor" />
-        <module name="nelkinda-japi-swing-test" />
+        <module name="nelkinda-japi-swing-example-csveditor" />
         <module name="nelkinda-japi-swing-testlib" />
+        <module name="nelkinda-japi-swing" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="nelkinda-japi-parent" target="1.8" />
-      <module name="nelkinda-japi-swing" target="1.8" />
-      <module name="nelkinda-japi-swing-example-csveditor" target="1.8" />
-      <module name="nelkinda-japi-swing-example-texteditor" target="1.8" />
+      <module name="nelkinda-japi-parent" target="13" />
+      <module name="nelkinda-japi-swing" target="13" />
+      <module name="nelkinda-japi-swing-example-csveditor" target="13" />
+      <module name="nelkinda-japi-swing-example-texteditor" target="13" />
       <module name="nelkinda-japi-swing-examples-csveditor" target="1.8" />
-      <module name="nelkinda-japi-swing-examples-parent" target="1.8" />
-      <module name="nelkinda-japi-swing-parent" target="1.8" />
-      <module name="nelkinda-japi-swing-test" target="1.8" />
-      <module name="nelkinda-japi-swing-testlib" target="1.8" />
+      <module name="nelkinda-japi-swing-examples-parent" target="13" />
+      <module name="nelkinda-japi-swing-parent" target="13" />
+      <module name="nelkinda-japi-swing-test" target="13" />
+      <module name="nelkinda-japi-swing-testlib" target="13" />
     </bytecodeTargetLevel>
   </component>
 </project>
