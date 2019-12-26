@@ -45,17 +45,7 @@ public enum SwingAssert {
      */
     public static void assertHasFocus(final Component component) throws InterruptedException, InvocationTargetException, ExecutionException {
         final Callable<Boolean> hasFocus = component::isFocusOwner;
-        final Object monitor = new Object();
-        final FocusAdapter focusAdapter = new FocusAdapter() {
-            @Override
-            public void focusGained(final FocusEvent e) {
-                SwingAssert.notify(monitor);
-            }
-        };
-        invokeAndWait(() -> component.addFocusListener(focusAdapter));
-        wait(monitor, hasFocus);
-        invokeAndWait(() -> component.removeFocusListener(focusAdapter));
-        assertTrue(callAndWait(hasFocus));
+        assertFocusCondition(component, hasFocus);
     }
 
     /**
@@ -65,18 +55,27 @@ public enum SwingAssert {
      * @throws InterruptedException In case executing the focus observation on the event thread was interrupted.
      */
     public static void assertNotHasFocus(final Component component) throws InterruptedException, InvocationTargetException, ExecutionException {
-        final Callable<Boolean> notHasFocus = () -> !component.hasFocus();
+        final Callable<Boolean> notHasFocus = () -> !component.isFocusOwner();
+        assertFocusCondition(component, notHasFocus);
+    }
+
+    private static void assertFocusCondition(final Component focusableComponent, final Callable<Boolean> condition) throws InterruptedException, InvocationTargetException, ExecutionException {
         final Object monitor = new Object();
         final FocusAdapter focusAdapter = new FocusAdapter() {
+            @Override
+            public void focusGained(final FocusEvent e) {
+                SwingAssert.notify(monitor);
+            }
+
             @Override
             public void focusLost(final FocusEvent e) {
                 SwingAssert.notify(monitor);
             }
         };
-        invokeAndWait(() -> component.addFocusListener(focusAdapter));
-        wait(monitor, notHasFocus);
-        invokeAndWait(() -> component.removeFocusListener(focusAdapter));
-        assertTrue(callAndWait(notHasFocus));
+        invokeAndWait(() -> focusableComponent.addFocusListener(focusAdapter));
+        wait(monitor, condition);
+        invokeAndWait(() -> focusableComponent.removeFocusListener(focusAdapter));
+        assertTrue(callAndWait(condition));
     }
 
     /**
