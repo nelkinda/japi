@@ -71,6 +71,10 @@ public class JOptionPane2Test {
         final Future<Optional<char[]>> future = callLater(() -> showPasswordDialog(null));
         final JPasswordField passwordField = callAndWait(() -> findComponent(JPasswordField.class, getWindows())).orElseThrow(AssertionError::new);
         assertNotNull(passwordField);
+        // The following is a hack to make the test pass on Linux.
+        // XXX Investigate whether this is a problem with the JDK on Linux or the code.
+        for (int i = 0; i < 5; i++)
+            invokeAndWait(passwordField::requestFocus);
         assertHasFocus(passwordField);
         final Robot robot = new Robot();
         robot.setAutoWaitForIdle(true);

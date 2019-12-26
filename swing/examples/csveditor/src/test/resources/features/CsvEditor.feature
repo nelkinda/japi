@@ -15,26 +15,40 @@
 # @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>, Nelkinda Software Craft Pvt Ltd
 # @version 0.0.2
 # @since 0.0.2
+@unit
 Feature: CSV Editor
 
   Background:
     Given I have just started the csvEditor.
 
+  @acceptance @feunit @beunit @integration
   Scenario: As a <User>, I want to <start the csvEditor> in order to <use it>
     Then the table name must be "<Unnamed>",
-    And the csvEditor must have focus,
-    And the table must be empty,
-    And the window title must be "CSV Editor: <Unnamed>"
+    And the csvEditor MUST have focus,
+    And the table MUST be empty,
+    And the window title MUST be "CSV Editor: <Unnamed>"
 
   Scenario: As a <User>, I want to <quit the editor> in order to <stop using it>
     When I wait for action "quit",
     Then the window is disposed.
 
+  @acceptance
   Scenario: As a <User>, I want to <insert a new column> in an empty table
-    And the csvEditor must have focus,
-    When I wait for action "columnInsertAfter"
-    Then the table must have the following content:
+    Then the csvEditor MUST have focus,
+    When I wait for action "columnInsertAfter",
+    Then the table content MUST be:
       | Unnamed_A |
-    When I wait for action "columnInsertAfter"
-    Then the table must have the following content:
+    When I wait for action "columnInsertAfter",
+    Then the table content MUST be:
       | Unnamed_A | Unnamed_B |
+    When I wait for action "columnInsertAfter",
+    Then the table content MUST be:
+      | Unnamed_A | Unnamed_B | Unnamed_C |
+
+  Scenario: As a <User>, I want to <delete a column> in a non-empty table
+    Then the csvEditor MUST have focus,
+    When I wait for action "columnInsertAfter",
+    Then the table content MUST be:
+      | Unnamed_A |
+    When I wait for action "columnDelete",
+    Then the table MUST be empty,

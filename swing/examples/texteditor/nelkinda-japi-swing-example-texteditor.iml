@@ -23,7 +23,12 @@
     <orderEntry type="library" scope="TEST" name="Maven: com.google.code.findbugs:annotations:2.0.1" level="project" />
     <orderEntry type="module" module-name="nelkinda-japi-swing-testlib" />
     <orderEntry type="module" module-name="nelkinda-japi-swing" />
-    <orderEntry type="library" name="Maven: org.jetbrains:annotations:15.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains:annotations:17.0.0" level="project" />
     <orderEntry type="library" name="Maven: net.java.linoleum:jlfgr:1_0" level="project" />
+  </component>
+  <component name="copyright">
+    <Base>
+      <setting name="state" value="2" />
+    </Base>
   </component>
 </module>

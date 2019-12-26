@@ -351,12 +351,12 @@ public enum SwingUtilitiesN {
             final Map<String, Function<String, ?>> actionConverters = new HashMap<>();
             actionConverters.put(ACCELERATOR_KEY, KeyStroke::getKeyStroke);
             actionConverters.put(DISPLAYED_MNEMONIC_INDEX_KEY, Integer::parseInt);
-            actionConverters.put(NAME, identity);
-            actionConverters.put(MNEMONIC_KEY, s -> getExtendedKeyCodeForChar(s.codePointAt(0)));
-            actionConverters.put(SHORT_DESCRIPTION, identity);
-            actionConverters.put(LONG_DESCRIPTION, identity);
-            actionConverters.put(SMALL_ICON, SwingUtilitiesN::getImageIcon);
             actionConverters.put(LARGE_ICON_KEY, SwingUtilitiesN::getImageIcon);
+            actionConverters.put(LONG_DESCRIPTION, identity);
+            actionConverters.put(MNEMONIC_KEY, s -> getExtendedKeyCodeForChar(s.codePointAt(0)));
+            actionConverters.put(NAME, identity);
+            actionConverters.put(SHORT_DESCRIPTION, identity);
+            actionConverters.put(SMALL_ICON, SwingUtilitiesN::getImageIcon);
             return unmodifiableMap(actionConverters);
         }
     }

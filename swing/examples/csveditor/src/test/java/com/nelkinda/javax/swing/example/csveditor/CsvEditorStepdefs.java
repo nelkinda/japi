@@ -17,6 +17,7 @@ package com.nelkinda.javax.swing.example.csveditor;
 import cucumber.api.DataTable;
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
+import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -85,23 +86,23 @@ public class CsvEditorStepdefs {
         assertEquals(expectedTableName, csvEditor.getTitle());
     }
 
-    @Then("^the csvEditor must have focus[,.]?$")
+    @Then("^the csvEditor MUST have focus[,.]?$")
     public void theCsvEditorHasFocus() throws Throwable {
         assertHasFocus(csvEditorComponent);
     }
 
-    @Then("^the window title must be \"([^\"]*)\"[,.]?$")
+    @Then("^the window title MUST be \"([^\"]*)\"[,.]?$")
     public void theWindowTitleMustBe(final String expectedWindowTitle) {
         assertEquals(expectedWindowTitle, csvEditor.getJFrame().getTitle());
     }
 
-    @And("^the table must be empty[,.]?$")
+    @And("^the table MUST be empty[,.]?$")
     public void theTableMustBeEmpty() throws Throwable {
-        theTableMustHaveTheFollowingContent(DataTable.create(emptyList()));
+        theTableContentMustBe(DataTable.create(emptyList()));
     }
 
-    @And("^the table must have the following content:$")
-    public void theTableMustHaveTheFollowingContent(@NotNull final DataTable expectedDataTable) throws Throwable {
+    @And("^the table content MUST be:$")
+    public void theTableContentMustBe(@NotNull final DataTable expectedDataTable) throws Throwable {
         final DataTable actualDataTable = createDataTable(csvEditorComponent);
         actualDataTable.diff(expectedDataTable);
     }
@@ -208,5 +209,15 @@ public class CsvEditorStepdefs {
         assertFalse(callAndWait(() -> csvEditorComponent.hasFocus()));
         assertFalse(callAndWait(() -> csvEditor.getJFrame().isVisible()));
         assertFalse(callAndWait(() -> csvEditor.getJFrame().isDisplayable()));
+    }
+
+    @Before
+    public void setup() {
+
+    }
+
+    @After
+    public void after() {
+
     }
 }

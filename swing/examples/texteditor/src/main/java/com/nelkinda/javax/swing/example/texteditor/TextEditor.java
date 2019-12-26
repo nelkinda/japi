@@ -103,7 +103,7 @@ public class TextEditor {
      * The last SwingWorker.
      * This information is provided for testing asynchronous operations.
      */
-    private SwingWorker lastWorker;
+    private SwingWorker<?, ?> lastWorker;
 
     TextEditor() {
         guiFactory = new GuiFactory(getBundle(getClass().getName()), actionMap);
@@ -170,10 +170,7 @@ public class TextEditor {
 
     private void setFile(@Nullable final File file) {
         this.file = file;
-        if (file != null)
-            title = file.getName();
-        else
-            title = UNNAMED;
+        title = file != null ? file.getName() : UNNAMED;
         jFrame.setTitle(generateWindowTitle(title));
     }
 
@@ -182,7 +179,7 @@ public class TextEditor {
             runWorker(new Loader(fileChooser.getSelectedFile()));
     }
 
-    private synchronized void runWorker(final SwingWorker lastWorker) {
+    private synchronized void runWorker(final SwingWorker<?, ?> lastWorker) {
         this.lastWorker = lastWorker;
         lastWorker.execute();
         notify();
@@ -196,9 +193,8 @@ public class TextEditor {
     }
 
     private void saveAs() {
-        if (APPROVE_OPTION == fileChooser.showSaveDialog(jFrame)) {
+        if (APPROVE_OPTION == fileChooser.showSaveDialog(jFrame))
             runWorker(new Saver(fileChooser.getSelectedFile()));
-        }
     }
 
     /**
@@ -227,8 +223,8 @@ public class TextEditor {
      * @return The last SwingWorker.
      * @throws InterruptedException In case waiting for the last SwingWorker was interrupted.
      */
-    synchronized SwingWorker getLastWorker() throws InterruptedException {
-        SwingWorker lastWorker;
+    synchronized SwingWorker<?, ?> getLastWorker() throws InterruptedException {
+        SwingWorker<?, ?> lastWorker;
         while ((lastWorker = this.lastWorker) == null)
             wait();
         this.lastWorker = null;
@@ -243,7 +239,7 @@ public class TextEditor {
      * @since 0.0.2
      */
     public enum Main {
-        ; // NOSONAR Bug in SonarQube: https://jira.sonarsource.com/browse/SONARJAVA-1909
+        ;
 
         /**
          * Main program.
@@ -325,7 +321,7 @@ public class TextEditor {
             try {
                 jEditorPane.setText(get());
                 setFile(file);
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (final InterruptedException | ExecutionException e) {
                 assert false : e;
             }
         }

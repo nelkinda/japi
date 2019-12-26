@@ -15,6 +15,15 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.nelkinda.japi</groupId>
+        <artifactId>nelkinda-japi-swing-examples-parent</artifactId>
+        <version>0.0.3-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>nelkinda-japi-swing-example-csveditor</artifactId>
+    <name>${project.groupId}:${project.artifactId}</name>
+
     <dependencies>
         <dependency>
             <groupId>info.cukes</groupId>
@@ -23,6 +32,10 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-junit</artifactId>
         </dependency>
         <dependency>
             <groupId>com.nelkinda.japi</groupId>
@@ -36,12 +49,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <parent>
-        <groupId>com.nelkinda.japi</groupId>
-        <artifactId>nelkinda-japi-swing-examples-parent</artifactId>
-        <version>0.0.3-SNAPSHOT</version>
-    </parent>
-
-    <artifactId>nelkinda-japi-swing-example-csveditor</artifactId>
-    <name>${project.groupId}:${project.artifactId}</name>
 </project>

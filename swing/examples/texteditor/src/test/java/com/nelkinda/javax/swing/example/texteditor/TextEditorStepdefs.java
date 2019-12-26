@@ -14,8 +14,8 @@
 
 package com.nelkinda.javax.swing.example.texteditor;
 
-import com.nelkinda.javax.swing.SwingUtilitiesN;
 import cucumber.api.java.After;
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -68,6 +68,12 @@ public class TextEditorStepdefs {
         // Nothing to do
     }
 
+    @After
+    @Before
+    public void waitABit() throws InvocationTargetException, InterruptedException {
+        invokeAndWait(() -> {});
+    }
+
     /**
      * Starts the text editor.
      */
@@ -81,7 +87,7 @@ public class TextEditorStepdefs {
     }
 
     @When("^I enter the text \"([^\"]*)\"[,.]?$")
-    public void iEnterTheText(final String text) throws BadLocationException, InvocationTargetException, InterruptedException {
+    public void iEnterTheText(final String text) throws InvocationTargetException, InterruptedException {
         invokeAndWait(() -> {
             final Document document = textEditorComponent.getDocument();
             try {
@@ -93,7 +99,7 @@ public class TextEditorStepdefs {
     }
 
     @When("^I action \"([^\"]*)\"[,.]?$")
-    public void iAction(final String actionCommand) throws InvocationTargetException, InterruptedException {
+    public void iAction(final String actionCommand) {
         invokeLater(() -> {
             final ActionMap actions = textEditor.getActionMap();
             final Action action = actions.get(actionCommand);
@@ -113,6 +119,7 @@ public class TextEditorStepdefs {
 
     @When("^I wait for I/O to be completed[,.]$")
     public void iWaitForIOToBeCompleted() throws InterruptedException, ExecutionException, InvocationTargetException {
+        Thread.sleep(50);
         textEditor.getLastWorker().get();
         SwingUtilities.invokeAndWait(() -> {});
     }
@@ -124,17 +131,17 @@ public class TextEditorStepdefs {
 
     @Then("^the document name must be \"([^\"]*)\"[,.]?$")
     public void theDocumentNameMustBe(@NotNull final String expectedDocumentName) throws InterruptedException, InvocationTargetException, ExecutionException {
-        assertEquals(expectedDocumentName, SwingUtilitiesN.callAndWait(textEditor::getTitle));
+        assertEquals(expectedDocumentName, callAndWait(textEditor::getTitle));
     }
 
     @Then("^the window title must be \"([^\"]*)\"[,.]?$")
     public void theWindowTitleMustBe(final String expectedWindowTitle) throws InterruptedException, ExecutionException, InvocationTargetException {
-        assertEquals(expectedWindowTitle, SwingUtilitiesN.callAndWait(textEditor.getJFrame()::getTitle));
+        assertEquals(expectedWindowTitle, callAndWait(textEditor.getJFrame()::getTitle));
     }
 
     @Then("^the document must have the following content:$")
     public void theDocumentMustHaveTheFollowingContent(final String expectedDocumentText) throws InterruptedException, ExecutionException, InvocationTargetException {
-        assertEquals(expectedDocumentText, SwingUtilitiesN.callAndWait(textEditorComponent::getText));
+        assertEquals(expectedDocumentText, callAndWait(textEditorComponent::getText));
     }
 
     @Then("^I must be asked for a filename[,.]?$")

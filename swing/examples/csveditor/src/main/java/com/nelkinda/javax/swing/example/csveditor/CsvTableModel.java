@@ -184,4 +184,11 @@ public class CsvTableModel implements TableModel {
             }
         }
     }
+
+    public void columnDelete(int columnIndex) {
+        columnCount--;
+        columnNames.remove(columnIndex);
+        for (final List<String> row : values)
+            row.remove(columnIndex);
+    }
 }

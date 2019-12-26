@@ -5,9 +5,15 @@
     <file url="file://$PROJECT_DIR$/swing" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/swing/examples" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/swing/examples/csveditor" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/swing/examples/csveditor/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/swing/examples/csveditor/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/swing/examples/texteditor" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/swing/examples/texteditor/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/swing/examples/texteditor/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/swing/library" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/swing/library/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/swing/test" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/swing/testlib" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/swing/testlib/src/main/java" charset="UTF-8" />
   </component>
 </project>

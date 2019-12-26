@@ -117,7 +117,8 @@ public class CsvEditor {
     }
 
     public void columnDelete(final ActionEvent e) {
-        // TODO
+        final int editingColumn = jTable.getEditingColumn();
+        ((CsvTableModel) jTable.getModel()).columnDelete(editingColumn);
     }
 
     public void newFile(final ActionEvent e) {

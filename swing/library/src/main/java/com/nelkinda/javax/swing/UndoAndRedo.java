@@ -23,7 +23,7 @@ import javax.swing.undo.UndoManager;
 
 /**
  * Manages Undo and Redo for an application.
- * It's a wrapper for {@link UndoManager} which provides a more lean and application-oriented interface.
+ * It's a wrapper for {@link UndoManager} and provides a more lean and application-oriented interface.
  *
  * @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>, Nelkinda Software Craft Pvt Ltd
  * @version 0.0.2

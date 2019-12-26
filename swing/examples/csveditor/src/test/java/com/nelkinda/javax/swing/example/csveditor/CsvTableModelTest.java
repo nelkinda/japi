@@ -34,9 +34,10 @@ import static org.junit.Assert.assertThat;
  */
 public class CsvTableModelTest {
 
+    private final CsvTableModel tableModel = new CsvTableModel();
+
     @Test
     public void emptyTableModel() {
-        final TableModel tableModel = new CsvTableModel();
         assertThat(tableModel.getColumnCount(), is(0));
         assertThat(tableModel.getRowCount(), is(0));
     }
@@ -46,7 +47,6 @@ public class CsvTableModelTest {
         final TableModelListener tableModelListener = e -> {
         };
         final TableModelListener tableModelListener2 = org.mockito.Mockito.mock(TableModelListener.class);
-        final CsvTableModel tableModel = new CsvTableModel();
         tableModel.addTableModelListener(tableModelListener);
         assertThat(tableModel.getTableModelListeners(), contains(tableModelListener));
         tableModel.addTableModelListener(tableModelListener2);
@@ -62,7 +62,6 @@ public class CsvTableModelTest {
 
     @Test
     public void firstColumnInsertBefore() {
-        final CsvTableModel tableModel = new CsvTableModel();
         tableModel.columnInsertBefore(0, "First Column");
         assertThat(tableModel.getColumnCount(), is(1));
         assertThat(tableModel.getColumnName(0), is("First Column"));
@@ -71,14 +70,12 @@ public class CsvTableModelTest {
 
     @Test
     public void firstRowInsertBefore() {
-        final CsvTableModel tableModel = new CsvTableModel();
         tableModel.rowInsertBefore(0);
         assertThat(tableModel.getRowCount(), is(1));
     }
 
     @Test
     public void firstColumnInsertAfter() {
-        final CsvTableModel tableModel = new CsvTableModel();
         tableModel.columnInsertAfter(-1, "First Column");
         assertThat(tableModel.getColumnCount(), is(1));
         assertThat(tableModel.getColumnName(0), is("First Column"));
@@ -87,18 +84,23 @@ public class CsvTableModelTest {
 
     @Test
     public void firstRowInsertAfter() {
-        final CsvTableModel tableModel = new CsvTableModel();
         tableModel.rowInsertAfter(-1);
         assertThat(tableModel.getRowCount(), is(1));
     }
 
     @Test
     public void addFirstCellWithAfter() {
-        final CsvTableModel tableModel = new CsvTableModel();
         tableModel.rowInsertAfter(-1);
         tableModel.columnInsertAfter(-1, "First Column");
         assertThat(tableModel.getValueAt(0, 0), is(""));
         tableModel.setValueAt((Object) "foo", 0, 0);
         assertThat(tableModel.getValueAt(0, 0), is("foo"));
+    }
+
+    @Test
+    public void deleteColumn() {
+        tableModel.columnInsertAfter(-1, "First Column");
+        tableModel.columnDelete(0);
+        emptyTableModel();
     }
 }
