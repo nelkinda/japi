@@ -29,8 +29,8 @@
             <version>0.0.3-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
         </dependency>
         <dependency>
             <groupId>net.java.linoleum</groupId>
@@ -40,6 +40,10 @@
             <groupId>com.nelkinda.japi</groupId>
             <artifactId>nelkinda-japi-swing-testlib</artifactId>
             <version>0.0.3-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
         </dependency>
     </dependencies>
 </project>

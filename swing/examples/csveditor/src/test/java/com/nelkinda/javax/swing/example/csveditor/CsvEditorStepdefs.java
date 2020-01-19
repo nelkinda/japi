@@ -14,14 +14,6 @@
 
 package com.nelkinda.javax.swing.example.csveditor;
 
-import cucumber.api.DataTable;
-import cucumber.api.PendingException;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -31,6 +23,14 @@ import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
+
+import io.cucumber.datatable.DataTable;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.jetbrains.annotations.NotNull;
 
 import static com.nelkinda.javax.swing.SwingUtilitiesN.callAndWait;
@@ -128,7 +128,9 @@ public class CsvEditorStepdefs {
     private static DataTable createDataTable(@NotNull final TableModel tableModel) {
         final String[] columnNames = getColumnNames(tableModel);
         final List<List<String>> rawTableData = getTableCellsAs2DList(tableModel);
-        return DataTable.create(rawTableData, (String) null, columnNames);
+        rawTableData.add(0, List.of(columnNames));
+//        return DataTable.create(rawTableData, (String) null, columnNames);
+        return DataTable.create(rawTableData);
     }
 
     /**

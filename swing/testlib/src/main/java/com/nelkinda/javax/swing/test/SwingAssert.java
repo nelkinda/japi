@@ -24,8 +24,8 @@ import java.util.concurrent.ExecutionException;
 import static com.nelkinda.javax.swing.SwingUtilitiesN.callAndWait;
 import static java.lang.Thread.currentThread;
 import static javax.swing.SwingUtilities.invokeAndWait;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Assertions for testing Swing applications.

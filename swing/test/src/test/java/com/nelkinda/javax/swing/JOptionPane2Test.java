@@ -14,6 +14,8 @@
 
 package com.nelkinda.javax.swing;
 
+import org.junit.jupiter.api.Test;
+
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.lang.reflect.InvocationTargetException;
@@ -21,7 +23,6 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.swing.JPasswordField;
-import org.junit.Test;
 
 import static com.nelkinda.javax.swing.JOptionPane2.showPasswordDialog;
 import static com.nelkinda.javax.swing.SwingUtilitiesN.callAndWait;
@@ -35,10 +36,7 @@ import static java.awt.event.KeyEvent.VK_ENTER;
 import static java.awt.event.KeyEvent.VK_ESCAPE;
 import static java.awt.event.KeyEvent.VK_SHIFT;
 import static javax.swing.SwingUtilities.invokeAndWait;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JOptionPane2Test {
     @Test

@@ -14,6 +14,8 @@
 
 package com.nelkinda.javax.swing;
 
+import org.junit.jupiter.api.Test;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -33,9 +35,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.LookAndFeel;
 import javax.swing.UnsupportedLookAndFeelException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static com.nelkinda.javax.swing.SwingUtilitiesN.callAndWait;
 import static com.nelkinda.javax.swing.SwingUtilitiesN.callLater;
@@ -56,21 +55,9 @@ import static javax.swing.KeyStroke.getKeyStroke;
 import static javax.swing.UIManager.getLookAndFeel;
 import static javax.swing.UIManager.getSystemLookAndFeelClassName;
 import static javax.swing.UIManager.setLookAndFeel;
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SwingUtilitiesNTest {
-
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testFindNonExistingComponentInContainer() {
@@ -138,9 +125,13 @@ public class SwingUtilitiesNTest {
 
     @edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
     @Test
-    public void callAndWaitThrowsNPE() throws InterruptedException, ExecutionException, InvocationTargetException {
-        exception.expect(anyOf(instanceOf(NullPointerException.class), instanceOf(IllegalArgumentException.class)));
-        callAndWait(null);
+    public void callAndWaitThrowsNPE() {
+        try {
+            callAndWait(null);
+            fail("Expected NullPointerException or IllegalArgumentException to be thrown.");
+        } catch (final Throwable t) {
+            assertTrue(t instanceof NullPointerException || t instanceof IllegalArgumentException);
+        }
     }
 
     @Test
@@ -166,8 +157,12 @@ public class SwingUtilitiesNTest {
     @edu.umd.cs.findbugs.annotations.SuppressWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
     @Test
     public void callLaterThrowsNPE() {
-        exception.expect(anyOf(instanceOf(NullPointerException.class), instanceOf(IllegalArgumentException.class)));
-        callLater(null);
+        try {
+            callLater(null);
+            fail("Expected exception to be thrown.");
+        } catch (final Throwable t) {
+            assertTrue(t instanceof NullPointerException || t instanceof IllegalArgumentException);
+        }
     }
 
     @Test
@@ -191,7 +186,7 @@ public class SwingUtilitiesNTest {
         assertEquals(getImageIcon("toolbarButtonGraphics/general/About24.gif"), action.getValue(LARGE_ICON_KEY));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void initializeActionWithoutActionCommand_throwsNPE() {
         final Action action = new AbstractAction() {
             @Override
@@ -199,7 +194,7 @@ public class SwingUtilitiesNTest {
             }
         };
         final ResourceBundle bundle = getBundle(SwingUtilitiesNTest.class.getName());
-        initActionFromBundle(action, bundle);
+        assertThrows(NullPointerException.class, () -> initActionFromBundle(action, bundle));
     }
 
     @Test

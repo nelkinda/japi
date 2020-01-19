@@ -14,7 +14,8 @@
 
 package com.nelkinda.javax.swing.event;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.awt.event.InputMethodListener;
 

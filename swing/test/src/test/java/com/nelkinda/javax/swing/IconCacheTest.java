@@ -14,12 +14,11 @@
 
 package com.nelkinda.javax.swing;
 
-import javax.swing.ImageIcon;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import javax.swing.ImageIcon;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit Test for {@link IconCache}.

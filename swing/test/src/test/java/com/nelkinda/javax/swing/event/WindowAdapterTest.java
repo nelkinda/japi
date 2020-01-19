@@ -14,8 +14,9 @@
 
 package com.nelkinda.javax.swing.event;
 
+import org.junit.jupiter.api.Test;
+
 import java.awt.event.WindowListener;
-import org.junit.Test;
 
 public class WindowAdapterTest {
     @Test
