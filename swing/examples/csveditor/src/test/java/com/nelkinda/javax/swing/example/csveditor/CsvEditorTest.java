@@ -26,8 +26,6 @@ import org.junit.runner.RunWith;
  * @since 0.0.2
  */
 @CucumberOptions(
-        features = { "src/test/resources/features/" },
-        glue = { "com.nelkinda.javax.swing.example.csveditor" },
         tags = {"~@wip", "~@future", "@acceptance"}
 )
 @RunWith(Cucumber.class)

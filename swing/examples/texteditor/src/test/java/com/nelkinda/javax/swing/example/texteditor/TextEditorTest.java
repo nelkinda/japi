@@ -14,7 +14,6 @@
 
 package com.nelkinda.javax.swing.example.texteditor;
 
-import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 import org.junit.runner.RunWith;
 
@@ -25,10 +24,6 @@ import org.junit.runner.RunWith;
  * @version 0.0.2
  * @since 0.0.2
  */
-@CucumberOptions(
-        features = { "src/test/resources/features/" },
-        glue = { "com.nelkinda.javax.swing.example.texteditor" }
-)
 @RunWith(Cucumber.class)
 public class TextEditorTest { // NOSONAR Sonar doesn't know about Cucumber.
 }
