@@ -15,7 +15,6 @@
 package com.nelkinda.javax.swing.example.csveditor;
 
 import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
 /**
@@ -25,9 +24,6 @@ import org.junit.runner.RunWith;
  * @version 0.0.2
  * @since 0.0.2
  */
-@CucumberOptions(
-        tags = {"~@wip", "~@future", "@acceptance"}
-)
 @RunWith(Cucumber.class)
 public class CsvEditorTest { // NOSONAR Sonar doesn't know about Cucumber.
 }

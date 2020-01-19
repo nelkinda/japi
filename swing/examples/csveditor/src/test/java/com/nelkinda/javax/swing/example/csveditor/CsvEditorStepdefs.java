@@ -126,10 +126,7 @@ public class CsvEditorStepdefs {
      */
     @NotNull
     private static DataTable createDataTable(@NotNull final TableModel tableModel) {
-        final String[] columnNames = getColumnNames(tableModel);
         final List<List<String>> rawTableData = getTableCellsAs2DList(tableModel);
-        rawTableData.add(0, List.of(columnNames));
-//        return DataTable.create(rawTableData, (String) null, columnNames);
         return DataTable.create(rawTableData);
     }
 

@@ -15,13 +15,11 @@
 # @author <a href="mailto:Christian.Hujer@nelkinda.com">Christian Hujer</a>, Nelkinda Software Craft Pvt Ltd
 # @version 0.0.2
 # @since 0.0.2
-@unit
 Feature: CSV Editor
 
   Background:
     Given I have just started the csvEditor.
 
-  @acceptance @feunit @beunit @integration
   Scenario: As a <User>, I want to <start the csvEditor> in order to <use it>
     Then the table name must be "<Unnamed>",
     And the csvEditor MUST have focus,
@@ -32,7 +30,6 @@ Feature: CSV Editor
     When I wait for action "quit",
     Then the window is disposed.
 
-  @acceptance
   Scenario: As a <User>, I want to <insert a new column> in an empty table
     Then the csvEditor MUST have focus,
     When I wait for action "columnInsertAfter",
