@@ -180,7 +180,7 @@ public class TextEditor {
     private synchronized void runWorker(final SwingWorker<?, ?> lastWorker) {
         this.lastWorker = lastWorker;
         lastWorker.execute();
-        notify();
+        notifyAll();
     }
 
     private void save() {
@@ -319,7 +319,9 @@ public class TextEditor {
             try {
                 jEditorPane.setText(get());
                 setFile(file);
-            } catch (final InterruptedException | ExecutionException e) {
+            } catch (final InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } catch (final ExecutionException e) {
                 assert false : e;
             }
         }
