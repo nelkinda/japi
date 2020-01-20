@@ -8,9 +8,9 @@
         <outputRelativeToContentRoot value="true" />
         <module name="nelkinda-japi-swing-test" />
         <module name="nelkinda-japi-swing-example-texteditor" />
-        <module name="nelkinda-japi-swing-examples-csveditor" />
-        <module name="nelkinda-japi-swing-example-csveditor" />
         <module name="nelkinda-japi-swing-testlib" />
+        <module name="nelkinda-japi-swing-example-csveditor" />
+        <module name="nelkinda-japi-swing-examples-csveditor" />
         <module name="nelkinda-japi-swing" />
       </profile>
     </annotationProcessing>
