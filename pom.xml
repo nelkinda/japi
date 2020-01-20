@@ -53,8 +53,8 @@
         <connection>scm:git:git://github.com/nelkinda/japi.git</connection>
         <developerConnection>scm:git:ssh://github.com:nelkinda/japi.git</developerConnection>
         <url>http://github.com/nelkinda/japi/tree/master</url>
-      <tag>nelkinda-japi-parent-0.0.2</tag>
-  </scm>
+        <tag>nelkinda-japi-parent-0.0.2</tag>
+    </scm>
 
     <dependencyManagement>
         <dependencies>
