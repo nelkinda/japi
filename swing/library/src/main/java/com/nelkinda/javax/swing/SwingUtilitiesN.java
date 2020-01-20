@@ -19,7 +19,6 @@ import java.awt.Container;
 import java.awt.Window;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.logging.Logger;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -45,9 +45,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static java.awt.event.KeyEvent.getExtendedKeyCodeForChar;
-import static java.util.Collections.unmodifiableMap;
 import static java.util.Objects.requireNonNull;
-import static java.util.function.Function.identity;
+import static java.util.function.UnaryOperator.identity;
 import static java.util.logging.Logger.getLogger;
 import static javax.swing.Action.ACCELERATOR_KEY;
 import static javax.swing.Action.ACTION_COMMAND_KEY;
@@ -347,17 +346,17 @@ public enum SwingUtilitiesN {
         ;
 
         private static Map<String, Function<String, ?>> createActionConverters() {
-            final Function<String, String> identity = identity();
-            final Map<String, Function<String, ?>> actionConverters = new HashMap<>();
-            actionConverters.put(ACCELERATOR_KEY, KeyStroke::getKeyStroke);
-            actionConverters.put(DISPLAYED_MNEMONIC_INDEX_KEY, Integer::parseInt);
-            actionConverters.put(LARGE_ICON_KEY, SwingUtilitiesN::getImageIcon);
-            actionConverters.put(LONG_DESCRIPTION, identity);
-            actionConverters.put(MNEMONIC_KEY, s -> getExtendedKeyCodeForChar(s.codePointAt(0)));
-            actionConverters.put(NAME, identity);
-            actionConverters.put(SHORT_DESCRIPTION, identity);
-            actionConverters.put(SMALL_ICON, SwingUtilitiesN::getImageIcon);
-            return unmodifiableMap(actionConverters);
+            final UnaryOperator<String> identity = identity();
+            return Map.of(
+                    ACCELERATOR_KEY, KeyStroke::getKeyStroke,
+                    DISPLAYED_MNEMONIC_INDEX_KEY, Integer::parseInt, LARGE_ICON_KEY,
+                    SwingUtilitiesN::getImageIcon, LONG_DESCRIPTION,
+                    identity, MNEMONIC_KEY,
+                    s -> getExtendedKeyCodeForChar(s.codePointAt(0)),
+                    NAME, identity,
+                    SHORT_DESCRIPTION, identity,
+                    SMALL_ICON, SwingUtilitiesN::getImageIcon
+            );
         }
     }
 }
